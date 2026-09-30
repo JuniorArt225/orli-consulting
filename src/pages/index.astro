@@ -1,0 +1,80 @@
+---
+/**
+ * Accueil — texte et ordre des sections fidèles à la maquette validée par le client :
+ * hero, partenaires, Nos pôles, Notre méthode, valeurs, blog, bandeau d'appel.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import TrustBand from '@/components/TrustBand.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import PoleCards from '@/components/PoleCards.astro';
+import MethodSteps from '@/components/MethodSteps.astro';
+import BlogPreview from '@/components/BlogPreview.astro';
+import CtaBanner from '@/components/CtaBanner.astro';
+import { values } from '@/lib/content';
+---
+
+<BaseLayout
+  title="ORLI Consulting — Cabinet de conseil en comptabilité à Abidjan"
+  description="Comptabilité, juridique, social & paie, audit & immobilisations : trois pôles d'expertise au service des entreprises ivoiriennes. Diagnostic gratuit sous 5 à 10 jours."
+>
+  <Hero />
+  <TrustBand />
+
+  <section class="bg-gray-light py-20 sm:py-24 lg:py-28" aria-labelledby="poles-title">
+    <div class="container-orli">
+      <SectionHeading
+        id="poles-title"
+        eyebrow="Nos pôles"
+        title="Une maison, trois pôles d'expertise"
+        description="Chaque pôle a sa propre offre et ses propres interlocuteurs — tous partagent la même identité, les mêmes méthodes et la même exigence de fiabilité."
+        linkLabel="Voir tous les services"
+        linkHref="/poles/"
+      />
+      <div class="mt-12 lg:mt-14">
+        <PoleCards />
+      </div>
+    </div>
+  </section>
+
+  <section id="methode" class="scroll-mt-20 py-20 sm:py-24 lg:py-28" aria-labelledby="method-title">
+    <div class="container-orli">
+      <SectionHeading id="method-title" eyebrow="Notre méthode" title="Découvrir sans engagement, avant de s'engager" />
+      <div class="mt-12 lg:mt-14">
+        <MethodSteps />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray-light py-16 sm:py-20" aria-label="Nos valeurs">
+    <dl class="container-orli grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        values.map((value) => (
+          <div>
+            <span class="block h-[3px] w-8 rounded-full bg-gold" aria-hidden="true" />
+            <dt class="mt-5 text-xl font-bold tracking-[-0.02em] text-navy">{value.title}</dt>
+            <dd class="mt-2 text-[15px] leading-relaxed text-navy/70">{value.description}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="py-20 sm:py-24 lg:py-28" aria-labelledby="blog-title">
+    <div class="container-orli">
+      <SectionHeading
+        id="blog-title"
+        eyebrow="Le blog"
+        title="Comprendre vos obligations, sans jargon"
+        description="Échéances fiscales, droit des sociétés, gestion des actifs : nos consultants décryptent ce qui change pour les entreprises ivoiriennes."
+        linkLabel="Tous les articles"
+        linkHref="/blog/"
+      />
+      <div class="mt-12 lg:mt-14">
+        <BlogPreview headingLevel="h3" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

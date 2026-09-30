@@ -1,0 +1,48 @@
+---
+interface Props {
+  items: readonly { label: string; href?: string }[];
+  tone?: 'dark' | 'light';
+}
+
+const { items, tone = 'dark' } = Astro.props;
+const site = Astro.site ?? new URL('https://orli-consulting.com');
+const trail = [{ label: 'Accueil', href: '/' }, ...items];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: trail.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.label,
+    ...(item.href ? { item: new URL(item.href, site).href } : {}),
+  })),
+};
+---
+
+<nav aria-label="Fil d'Ariane">
+  <ol class:list={['flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px]', tone === 'dark' ? 'text-white/65' : 'text-navy/65']}>
+    {
+      trail.map((item, i) => (
+        <li class="flex items-center gap-2">
+          {i > 0 && (
+            <span aria-hidden="true" class={tone === 'dark' ? 'text-white/35' : 'text-navy/35'}>
+              /
+            </span>
+          )}
+          {item.href && i < trail.length - 1 ? (
+            <a href={item.href} class:list={['link-draw transition-colors', tone === 'dark' ? 'hover:text-white' : 'hover:text-navy']}>
+              {item.label}
+            </a>
+          ) : (
+            <span aria-current="page" class={tone === 'dark' ? 'text-white' : 'text-navy'}>
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

@@ -1,0 +1,225 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import TrustBand from '@/components/TrustBand.astro';
+import ContactTable from '@/components/ContactTable.astro';
+import CtaBanner from '@/components/CtaBanner.astro';
+import Icon from '@/components/Icon.astro';
+import { audiences, getPole, methodSteps, values, type Pole, type PoleSlug } from '@/lib/content';
+import { offerAnchor } from '@/lib/anchors';
+import { fr } from '@/lib/typo';
+
+/** Regroupe des offres par pôle (ordre d'apparition conservé) : chaque pôle est nommé une seule fois, en entier. */
+const byPole = (refs: readonly (readonly [PoleSlug, string])[]) =>
+  refs.reduce<{ pole: Pole; titles: string[] }[]>((groups, [slug, title]) => {
+    const group = groups.find((item) => item.pole.slug === slug);
+    if (group) group.titles.push(title);
+    else groups.push({ pole: getPole(slug), titles: [title] });
+    return groups;
+  }, []);
+
+const offerHref = (pole: Pole, title: string) => `${pole.href}#${offerAnchor('offre', title)}`;
+
+/**
+ * La mission reprend les trois mots de la promesse du cabinet (« garantir
+ * l'existence, la conformité et la performance de votre entreprise ») et
+ * rattache chacun aux offres réelles qui la tiennent.
+ */
+const mission: { word: string; text: string; offers: [PoleSlug, string][] }[] = [
+  {
+    word: 'Existence',
+    text: 'Donner à votre entreprise des bases juridiques, fiscales et comptables solides dès sa création.',
+    offers: [
+      ['juridique', "Pack Constitution d'entreprise — statuts, RCCM"],
+      ['comptabilite', 'Pack Démarrage — régime fiscal, immatriculation, plan SYSCOHADA'],
+    ],
+  },
+  {
+    word: 'Conformité',
+    text: 'Tenir vos obligations comptables, fiscales et sociales, échéance après échéance.',
+    offers: [
+      ['comptabilite', 'Pack Suivi mensuel / trimestriel'],
+      ['comptabilite', 'Pack États financiers annuels'],
+      ['juridique', "Pack Vie sociale — PV d'AGO et d'AGE"],
+      ['juridique', 'Pack Paie externalisée'],
+      ['juridique', 'Check-up conformité sociale gratuit'],
+    ],
+  },
+  {
+    word: 'Performance',
+    text: 'Fiabiliser votre organisation, vos comptes et votre patrimoine immobilisé.',
+    offers: [
+      ['audit', 'Revue organisationnelle, financière et comptable'],
+      ['audit', 'Évaluation du contrôle interne'],
+      ['audit', 'Manuel de procédures'],
+      ['audit', 'Audit financier'],
+      ['audit', 'Inventaire physique, réconciliation, étiquetage RFID / QR'],
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Qui sommes-nous — ORLI Consulting"
+  description="ORLI Consulting, cabinet de conseil en comptabilité installé à Angré (Abidjan) : trois pôles d'expertise, une méthode en cinq étapes et une même exigence de fiabilité."
+>
+  <PageHero
+    crumbs={[{ label: 'Le cabinet' }]}
+    title="Un cabinet, trois pôles, une même exigence de fiabilité."
+    lead={fr(
+      "ORLI Consulting est un cabinet de conseil en comptabilité installé à Angré, à Abidjan. Nous accompagnons les créateurs, les TPE et les PME comme les moyennes et grandes entreprises, dans l'espace OHADA.",
+    )}
+  >
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+      <a href="/contact/#diagnostic" class="btn btn-gold">
+        Demander mon diagnostic gratuit
+        <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+      </a>
+      <a href="/poles/" class="btn btn-line-light">Voir nos pôles</a>
+    </div>
+  </PageHero>
+
+  <!-- Mission : les trois mots de la promesse, chacun relié aux offres qui la tiennent. -->
+  <section class="py-20 sm:py-24 lg:py-32" aria-labelledby="mission-title">
+    <div class="container-orli">
+      <div class="max-w-3xl">
+        <h2 id="mission-title" class="text-title font-extrabold text-navy">
+          Garantir l'existence, la conformité et la performance de votre entreprise
+        </h2>
+        <p class="mt-4 text-[17px] leading-relaxed text-navy/75 sm:text-lg">
+          C'est notre promesse. Chacun de ces trois mots correspond à des offres précises.
+        </p>
+      </div>
+
+      <ol class="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-3 lg:gap-10">
+        {
+          mission.map((item) => (
+            <li class="border-t border-navy/12 pt-8">
+              <h3 class="text-[clamp(2rem,1.4rem+2vw,2.9rem)] leading-none font-extrabold tracking-[-0.03em] text-navy">
+                {item.word}
+              </h3>
+              <p class="mt-7 text-[16px] leading-relaxed text-navy/75">{fr(item.text)}</p>
+              <div class="mt-7 space-y-5">
+                {byPole(item.offers).map(({ pole, titles }) => (
+                  <div>
+                    <a href={pole.href} class="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-navy/65 hover:text-navy">
+                      {pole.title}
+                      <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </a>
+                    <ul class="mt-2 space-y-2 text-[15px]">
+                      {titles.map((title) => (
+                        <li>
+                          <a href={offerHref(pole, title)} class="link-draw text-navy">
+                            {title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Pour qui : les deux publics confirmés par le cabinet. -->
+  <section class="bg-navy py-20 text-white sm:py-24 lg:py-28" aria-labelledby="audiences-title">
+    <div class="container-orli">
+      <h2 id="audiences-title" class="text-title max-w-2xl font-extrabold">Pour qui travaillons&#8209;nous&nbsp;?</h2>
+      <div class="mt-12 grid gap-6 lg:grid-cols-2">
+        {
+          audiences.map((audience) => (
+            <article class="rounded-2xl bg-navy-800 p-6 sm:p-8">
+              <h3 class="text-2xl font-bold tracking-[-0.02em]">{audience.title}</h3>
+              <p class="mt-3 text-[16px] leading-relaxed text-white/75">{audience.description}</p>
+              <div class="mt-7 space-y-6">
+                {byPole(audience.offers.map((ref) => [ref.pole, ref.title] as const)).map(({ pole, titles }) => (
+                  <div>
+                    <a href={pole.href} class="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-white/65 hover:text-white">
+                      {pole.title}
+                      <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </a>
+                    <ul class="mt-2 divide-y divide-white/10 border-y border-white/10">
+                      {titles.map((title) => (
+                        <li>
+                          <a href={offerHref(pole, title)} class="group flex items-center justify-between gap-4 py-3.5 text-[15px]">
+                            <span class="font-semibold text-white/90 group-hover:text-white">{title}</span>
+                            <Icon name="arrow-right" class="h-3.5 w-3.5 text-white/50 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 sm:py-24 lg:py-28" aria-labelledby="values-title">
+    <div class="container-orli grid gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-4">
+        <h2 id="values-title" class="text-title font-extrabold text-navy">Nos valeurs</h2>
+        <p class="mt-4 text-[17px] leading-relaxed text-navy/75">Quatre exigences, tenues à chaque mission.</p>
+      </div>
+      <dl class="grid gap-x-10 gap-y-2 sm:grid-cols-2 lg:col-span-8">
+        {
+          values.map((value) => (
+            <div class="border-t border-navy/12 pt-6 pb-7">
+              <dt class="text-xl font-bold tracking-[-0.02em] text-navy">{value.title}</dt>
+              <dd class="mt-2 text-[16px] leading-relaxed text-navy/70">{value.description}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- La méthode, en résumé : le détail vit sur l'accueil (le parcours). -->
+  <section class="bg-gray-light py-20 sm:py-24 lg:py-28" aria-labelledby="method-title">
+    <div class="container-orli">
+      <div class="md:flex md:items-end md:justify-between md:gap-10">
+        <h2 id="method-title" class="text-title max-w-2xl font-extrabold text-navy">Découvrir sans engagement, avant de s'engager</h2>
+        <a href="/#methode" class="group mt-6 inline-flex shrink-0 items-center gap-2 text-[15px] font-semibold text-navy md:mt-0">
+          <span class="link-draw">Le parcours en détail</span>
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </a>
+      </div>
+      <ol class="method mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+        {
+          methodSteps.map((item, i) => (
+            <li class="border-t border-navy/15 pt-5">
+              <h3 class="text-lg font-bold tracking-[-0.015em] text-navy">
+                <span class="mr-2 font-mono text-[13px] font-normal text-navy/60">{String(i + 1).padStart(2, '0')}</span>
+                {item.title}
+              </h3>
+              <p class="mt-2 text-[15px] leading-relaxed text-navy/70">{item.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="py-20 sm:py-24 lg:py-28" aria-labelledby="where-title">
+    <div class="container-orli grid gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-5">
+        <h2 id="where-title" class="text-title font-extrabold text-navy">Installés à Angré, présents dans l'espace OHADA</h2>
+        <p class="mt-4 text-[17px] leading-relaxed text-navy/75">Une équipe qui connaît le quotidien des entreprises ivoiriennes.</p>
+      </div>
+      <div class="lg:col-span-7">
+        <ContactTable address copy formHref="/contact/#diagnostic" />
+      </div>
+    </div>
+  </section>
+
+  <TrustBand class="border-t border-navy/8" />
+  <CtaBanner />
+</BaseLayout>
+

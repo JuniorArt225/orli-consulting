@@ -1,0 +1,47 @@
+---
+import { partners } from '@/lib/content';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<section class={`border-b border-navy/8 bg-white py-10 sm:py-12 ${className}`} aria-labelledby="trust-title">
+  <div class="container-orli flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-12">
+    <p id="trust-title" class="eyebrow shrink-0 whitespace-nowrap !text-navy/55">Ils nous font confiance</p>
+    <ul class="grid flex-1 grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-4">
+      {
+        partners.map((partner) => (
+          <li class="flex justify-center lg:justify-start">
+            <img
+              src={partner.logo}
+              alt={partner.name}
+              width="140"
+              height="44"
+              loading="lazy"
+              decoding="async"
+              class="partner-logo h-10 w-auto"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .partner-logo {
+    opacity: 0.7;
+    filter: grayscale(1);
+    transition:
+      opacity 220ms ease,
+      filter 220ms ease;
+  }
+
+  .partner-logo:hover {
+    opacity: 1;
+    filter: none;
+  }
+</style>

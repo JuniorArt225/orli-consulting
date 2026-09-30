@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- « O » d'ORLI souligné du double trait comptable ; tracé pur, sans police. -->
+  <rect width="32" height="32" rx="7" fill="#0a192f"/>
+  <circle cx="16" cy="13.5" r="6.6" fill="none" stroke="#eab308" stroke-width="3.4"/>
+  <path d="M8.5 24.2h15M8.5 27.4h15" stroke="#eab308" stroke-width="1.7" stroke-linecap="round"/>
+</svg>

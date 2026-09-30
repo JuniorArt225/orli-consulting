@@ -1,0 +1,63 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+
+interface Props {
+  /** Titre simple ; pour un titre enrichi, utiliser le slot « title ». */
+  title?: string;
+  lead?: string;
+  crumbs: readonly { label: string; href?: string }[];
+  tone?: 'navy' | 'light';
+}
+
+const { title, lead, crumbs, tone = 'navy' } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+const dark = tone === 'navy';
+---
+
+<section class:list={['relative isolate overflow-hidden', dark ? 'bg-navy text-white' : 'bg-gray-light text-navy']}>
+  {dark && <div class="page-light" aria-hidden="true" />}
+
+  <div class="container-orli relative pt-8 pb-16 sm:pt-10 lg:pb-24">
+    <Breadcrumbs items={crumbs} tone={dark ? 'dark' : 'light'} />
+
+    <div class:list={['mt-10 lg:mt-14', { 'grid items-start gap-10 lg:grid-cols-12 lg:gap-12': hasAside }]}>
+      <div class:list={[hasAside ? 'lg:col-span-7' : 'max-w-4xl']}>
+        <h1 class="enter-title text-display font-extrabold">
+          {Astro.slots.has('title') ? <slot name="title" /> : title}
+        </h1>
+        {
+          lead && (
+            <p
+              class:list={['enter-fade mt-6 max-w-2xl text-[17px] leading-relaxed sm:text-lg', dark ? 'text-white/75' : 'text-navy/75']}
+              style="--d: 180ms"
+            >
+              {lead}
+            </p>
+          )
+        }
+        <div class="enter-fade" style="--d: 260ms">
+          <slot />
+        </div>
+      </div>
+
+      {
+        hasAside && (
+          <div class="enter-rise lg:col-span-5">
+            <slot name="aside" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-light {
+    position: absolute;
+    inset: -30% -10% auto auto;
+    width: min(820px, 90vw);
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgb(27 49 87 / 0.85), transparent 70%);
+    z-index: -1;
+  }
+</style>

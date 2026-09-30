@@ -1,0 +1,87 @@
+---
+import Icon from '@/components/Icon.astro';
+import { formatDate, urlForImage } from '@/lib/sanity';
+import type { PostCard } from '@/types/sanity';
+
+interface Props {
+  post: PostCard;
+  /** Les cartes visibles au chargement ne doivent pas être lazy-loadées. */
+  eager?: boolean;
+  headingLevel?: 'h2' | 'h3' | 'h4';
+}
+
+const { post, eager = false, headingLevel: Heading = 'h3' } = Astro.props;
+const image = urlForImage(post.mainImage, 800, 450);
+const category = post.category?.title ?? 'Actualité';
+---
+
+<article class="blog-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-navy/10 bg-white">
+  <div class="overflow-hidden">
+    {
+      image ? (
+        <img
+          src={image}
+          alt={post.mainImage?.alt ?? ''}
+          width="800"
+          height="450"
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          class="blog-cover aspect-[16/9] w-full object-cover"
+        />
+      ) : (
+        <div class="blog-cover flex aspect-[16/9] w-full flex-col justify-between bg-navy-800 p-5 text-white" aria-hidden="true">
+          <span class="text-sm font-semibold text-white/75">{category}</span>
+          <span class="text-lg font-black tracking-[-0.03em] text-white/20">ORLI</span>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <p class="flex flex-wrap items-center gap-x-2 font-mono text-[12px] tracking-[0.06em]">
+      <span class="text-gold-700">{category}</span>
+      <span aria-hidden="true" class="text-navy/40">·</span>
+      <time datetime={post.publishedAt} class="text-navy/65">{formatDate(post.publishedAt)}</time>
+    </p>
+
+    <Heading class="mt-3 text-lg leading-snug font-bold tracking-[-0.015em] text-navy">
+      <a href={`/blog/${post.slug}/`} class="blog-link">{post.title}</a>
+    </Heading>
+
+    <p class="mt-2.5 line-clamp-3 text-[15px] leading-relaxed text-navy/70">{post.excerpt}</p>
+
+    <p class="mt-auto flex items-center justify-between gap-4 pt-5 text-sm">
+      <span class="inline-flex items-center gap-1.5 font-semibold text-navy">
+        Lire l'article
+        <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+      </span>
+      <span class="text-[13px] text-navy/60">{post.readingTime} min</span>
+    </p>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    transition: border-color 200ms ease;
+  }
+
+  .blog-cover {
+    transition: transform 700ms var(--ease-out-expo);
+  }
+
+  .blog-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  @media (hover: hover) {
+    .blog-card:hover {
+      border-color: rgb(10 25 47 / 0.3);
+    }
+
+    .blog-card:hover .blog-cover {
+      transform: scale(1.035);
+    }
+  }
+</style>

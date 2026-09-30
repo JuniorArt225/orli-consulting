@@ -1,0 +1,244 @@
+---
+/**
+ * Le rail du parcours — l'interaction signature du site.
+ *
+ * Desktop : un rail vertical collant liste les étapes ; son filet or se
+ * remplit à mesure que le lecteur avance et allume l'étape en cours.
+ * Mobile : une ligne de temps court le long des chapitres, avec la même logique.
+ *
+ * Les chapitres sont passés en slot (composant <JourneyStep />) et doivent
+ * porter les identifiants `${prefix}-1`, `${prefix}-2`, …
+ */
+interface Props {
+  id?: string;
+  steps: readonly { title: string }[];
+  prefix?: string;
+  /** Libellé de navigation du rail pour les lecteurs d'écran. */
+  label?: string;
+  class?: string;
+}
+
+const { id, steps, prefix = 'etape', label = 'Étapes du parcours', class: className = '' } = Astro.props;
+---
+
+<section id={id} data-journey class={`journey relative ${className}`}>
+  <div class="container-orli">
+    <slot name="intro" />
+
+    <div class="mt-12 lg:mt-20 lg:grid lg:grid-cols-12 lg:gap-10">
+      <aside class="hidden lg:col-span-3 lg:block">
+        <nav aria-label={label} class="rail sticky top-28">
+          <span class="rail-track" aria-hidden="true"><span class="rail-fill" data-rail-fill></span></span>
+          <ol>
+            {
+              steps.map((step, i) => (
+                <li>
+                  <a href={`#${prefix}-${i + 1}`} data-rail-link class="rail-link">
+                    <span class="rail-dot" aria-hidden="true" />
+                    <span class="rail-num font-mono">{String(i + 1).padStart(2, '0')}</span>
+                    <span class="rail-title">{step.title}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="chapters relative lg:col-span-9" data-chapters>
+        <span class="timeline lg:hidden" aria-hidden="true"><span class="timeline-fill" data-line-fill></span></span>
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+
+  document.querySelectorAll<HTMLElement>('[data-journey]').forEach((journey) => {
+    const chapters = Array.from(journey.querySelectorAll<HTMLElement>('[data-chapter]'));
+    const links = Array.from(journey.querySelectorAll<HTMLAnchorElement>('[data-rail-link]'));
+    const railFill = journey.querySelector<HTMLElement>('[data-rail-fill]');
+    const lineFill = journey.querySelector<HTMLElement>('[data-line-fill]');
+    const container = journey.querySelector<HTMLElement>('[data-chapters]');
+    if (!chapters.length || !container) return;
+
+    let frame = 0;
+    let lastActive = -1;
+
+    const update = () => {
+      frame = 0;
+      // Point de lecture : un peu au-dessus du milieu de l'écran.
+      const anchor = window.innerHeight * 0.42;
+      const tops = chapters.map((chapter) => chapter.getBoundingClientRect().top);
+
+      let active = 0;
+      tops.forEach((top, i) => {
+        if (top <= anchor) active = i;
+      });
+
+      // Rail desktop : le filet avance d'un point à l'autre, au prorata du chapitre en cours.
+      const start = tops[active];
+      const end = tops[active + 1] ?? container.getBoundingClientRect().bottom;
+      const within = clamp((anchor - start) / Math.max(1, end - start));
+      const steps = Math.max(1, chapters.length - 1);
+      const railProgress = tops[0] > anchor ? 0 : clamp((active + (active < steps ? within : 0)) / steps);
+      railFill?.style.setProperty('--progress', railProgress.toFixed(4));
+
+      // Ligne de temps mobile : progression continue sur tout le bloc.
+      const box = container.getBoundingClientRect();
+      lineFill?.style.setProperty('--progress', clamp((anchor - box.top) / box.height).toFixed(4));
+
+      if (active !== lastActive || tops[0] > anchor) {
+        const started = tops[0] <= anchor;
+        chapters.forEach((chapter, i) => {
+          chapter.dataset.state = !started || i > active ? 'todo' : i === active ? 'active' : 'done';
+        });
+        links.forEach((link, i) => {
+          link.dataset.state = !started || i > active ? 'todo' : i === active ? 'active' : 'done';
+          if (started && i === active) link.setAttribute('aria-current', 'step');
+          else link.removeAttribute('aria-current');
+        });
+        lastActive = started ? active : -1;
+      }
+    };
+
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    // Le calcul ne tourne que lorsque le parcours est à l'écran.
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule, { passive: true });
+        schedule();
+      } else {
+        window.removeEventListener('scroll', schedule);
+        window.removeEventListener('resize', schedule);
+      }
+    });
+    observer.observe(journey);
+    update();
+  });
+</script>
+
+<style>
+  /* ---- Rail desktop ---- */
+  .rail {
+    --row: 3.5rem;
+    position: sticky;
+  }
+
+  .rail ol {
+    position: relative;
+  }
+
+  .rail-track {
+    position: absolute;
+    top: calc(var(--row) / 2);
+    bottom: calc(var(--row) / 2);
+    left: 5px;
+    width: 2px;
+    background: rgb(10 25 47 / 0.1);
+    border-radius: 2px;
+  }
+
+  .rail-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-gold);
+    border-radius: inherit;
+    transform-origin: top center;
+    transform: scaleY(var(--progress, 0));
+    transition: transform 160ms linear;
+  }
+
+  .rail-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 12px 2.25rem 1fr;
+    align-items: center;
+    gap: 0.9rem;
+    height: var(--row);
+    color: rgb(10 25 47 / 0.62);
+    transition: color 200ms ease;
+  }
+
+  .rail-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: inset 0 0 0 2px rgb(10 25 47 / 0.18);
+    transition:
+      box-shadow 260ms ease,
+      background-color 260ms ease,
+      transform 360ms var(--ease-out-expo);
+  }
+
+  .rail-num {
+    font-size: 12.5px;
+  }
+
+  .rail-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .rail-link:hover {
+    color: var(--color-navy);
+  }
+
+  .rail-link[data-state='done'] {
+    color: rgb(10 25 47 / 0.75);
+  }
+
+  .rail-link[data-state='done'] .rail-dot {
+    background: var(--color-gold);
+    box-shadow: inset 0 0 0 2px var(--color-gold);
+  }
+
+  .rail-link[data-state='active'] {
+    color: var(--color-navy);
+  }
+
+  .rail-link[data-state='active'] .rail-num {
+    color: var(--color-gold-700);
+  }
+
+  .rail-link[data-state='active'] .rail-dot {
+    background: var(--color-gold);
+    box-shadow:
+      inset 0 0 0 2px var(--color-gold),
+      0 0 0 3px #fff,
+      0 0 0 4.5px var(--color-gold);
+    transform: scale(1.1);
+  }
+
+  /* ---- Ligne de temps mobile ---- */
+  .timeline {
+    position: absolute;
+    top: 1.1rem;
+    bottom: 5rem;
+    left: 15px;
+    width: 2px;
+    background: rgb(10 25 47 / 0.1);
+  }
+
+  .timeline-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-gold);
+    transform-origin: top center;
+    transform: scaleY(var(--progress, 0));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail-fill {
+      transition: none;
+    }
+  }
+</style>

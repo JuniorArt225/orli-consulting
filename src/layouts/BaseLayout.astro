@@ -1,0 +1,93 @@
+---
+import '@/styles/global.css';
+import { Font } from 'astro:assets';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { company } from '@/lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Image Open Graph absolue ou relative à la racine du site. */
+  image?: string;
+  /** Pages utilitaires (404) : hors index. */
+  noindex?: boolean;
+}
+
+const { title, description, image = '/og-default.jpg', noindex = false } = Astro.props;
+const site = Astro.site ?? new URL('https://orli-consulting.com');
+const canonical = new URL(Astro.url.pathname, site);
+
+// Données structurées : uniquement des faits publiés par le cabinet.
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'AccountingService',
+  name: company.name,
+  url: site.href,
+  email: company.email,
+  telephone: company.phones.map((phone) => phone.href.replace('tel:', '')),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address.street,
+    addressLocality: `${company.address.district}, ${company.address.city}`,
+    addressCountry: 'CI',
+  },
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a192f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={company.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={new URL(image, site).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <Font cssVariable="--font-schibsted" preload />
+    <Font cssVariable="--font-fragment" />
+
+    <!-- Active les animations d'apparition ; se retire si le script principal ne s'exécute pas. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!document.documentElement.dataset.ready) document.documentElement.classList.remove('js');
+      }, 3500);
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
+  </head>
+  <body>
+    <a
+      href="#contenu"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-lg focus:bg-gold focus:px-4 focus:py-2.5 focus:font-semibold focus:text-navy"
+    >
+      Aller au contenu
+    </a>
+
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+
+    <div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+      import '@/scripts/site';
+    </script>
+  </body>
+</html>

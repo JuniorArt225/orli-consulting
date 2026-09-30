@@ -1,0 +1,164 @@
+---
+import Icon from '@/components/Icon.astro';
+import { company } from '@/lib/content';
+
+interface Props {
+  /** Lien vers le formulaire de la page (ligne « Formulaire »). Omis : pas de ligne. */
+  formHref?: string;
+  /** Boutons « copier » à côté du numéro et de l'email (page Contact). */
+  copy?: boolean;
+  /** Ligne « Adresse » avec lien vers le plan. */
+  address?: boolean;
+  tone?: 'light' | 'dark';
+}
+
+const { formHref, copy = false, address = false, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+---
+
+<dl
+  class:list={[
+    'contact-table divide-y border-y text-[15px]',
+    dark ? 'divide-white/12 border-white/12 text-white' : 'divide-navy/12 border-navy/12 text-navy',
+  ]}
+>
+  {
+    formHref && (
+      <div class="row">
+        <dt class="font-semibold">Formulaire</dt>
+        <dd class={dark ? 'text-white/75' : 'text-navy/75'}>Réponse d'un consultant sous 48&nbsp;h.</dd>
+        <dd>
+          <a href={formHref} class="group inline-flex items-center gap-2 font-semibold">
+            <span class="link-draw">Remplir le formulaire</span>
+            <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </a>
+        </dd>
+      </div>
+    )
+  }
+
+  <div class="row">
+    <dt class="font-semibold">Téléphone</dt>
+    <dd class="flex flex-col gap-2 sm:col-span-2 sm:flex-row sm:flex-wrap sm:gap-x-7">
+      {
+        company.phones.map((phone) => (
+          <span class="inline-flex items-center gap-2">
+            <a href={phone.href} class="inline-flex items-center gap-2">
+              <Icon name="phone" class:list={['h-4 w-4', dark ? 'text-white/60' : 'text-navy/55']} />
+              <span class="link-draw tabular font-semibold">{phone.display}</span>
+              <span class:list={['text-[13px]', dark ? 'text-white/60' : 'text-navy/60']}>{phone.label}</span>
+            </a>
+            {copy && (
+              <button type="button" class="copy-button" data-copy={phone.display} aria-label={`Copier le numéro ${phone.display}`}>
+                <Icon name="copy" class="icon-copy h-4 w-4" />
+                <Icon name="check" class="icon-check h-4 w-4" />
+              </button>
+            )}
+          </span>
+        ))
+      }
+    </dd>
+  </div>
+
+  <div class="row">
+    <dt class="font-semibold">Email</dt>
+    <dd class="inline-flex items-center gap-2 sm:col-span-2">
+      <a href={`mailto:${company.email}`} class="inline-flex items-center gap-2">
+        <Icon name="mail" class:list={['h-4 w-4', dark ? 'text-white/60' : 'text-navy/55']} />
+        <span class="link-draw font-semibold">{company.email}</span>
+      </a>
+      {
+        copy && (
+          <button type="button" class="copy-button" data-copy={company.email} aria-label="Copier l'adresse email">
+            <Icon name="copy" class="icon-copy h-4 w-4" />
+            <Icon name="check" class="icon-check h-4 w-4" />
+          </button>
+        )
+      }
+    </dd>
+  </div>
+
+  {
+    address && (
+      <div class="row">
+        <dt class="font-semibold">Adresse</dt>
+        <dd class="sm:col-span-2">
+          <a href={company.mapsUrl} target="_blank" rel="noopener" class="group inline-flex items-start gap-2">
+            <Icon name="map-pin" class:list={['mt-0.5 h-4 w-4', dark ? 'text-white/60' : 'text-navy/55']} />
+            <span>
+              <span class="link-draw font-semibold">
+                {company.address.street}, {company.address.district}, {company.address.city}
+              </span>
+              <span class:list={['mt-0.5 flex items-center gap-1 text-[13px]', dark ? 'text-white/60' : 'text-navy/60']}>
+                Ouvrir le plan <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+                <span class="sr-only">(nouvel onglet)</span>
+              </span>
+            </span>
+          </a>
+        </dd>
+      </div>
+    )
+  }
+</dl>
+
+<style>
+  .row {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .row {
+      grid-template-columns: 9rem 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+    }
+  }
+
+  /* Copier : l'icône se change en coche le temps de la confirmation. */
+  .copy-button {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    color: currentColor;
+    opacity: 0.7;
+    transition:
+      opacity 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .copy-button:hover {
+    opacity: 1;
+    background: rgb(127 127 127 / 0.12);
+  }
+
+  .copy-button :global(svg) {
+    grid-area: 1 / 1;
+    transition:
+      opacity 200ms ease,
+      transform 320ms var(--ease-out-expo);
+  }
+
+  .copy-button :global(.icon-check) {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .copy-button[data-copied='true'] {
+    opacity: 1;
+  }
+
+  .copy-button[data-copied='true'] :global(.icon-copy) {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .copy-button[data-copied='true'] :global(.icon-check) {
+    opacity: 1;
+    transform: none;
+  }
+</style>

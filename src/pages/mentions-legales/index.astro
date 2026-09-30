@@ -1,0 +1,99 @@
+---
+import LegalPage from '@/components/LegalPage.astro';
+import { company, host } from '@/lib/content';
+
+// Les données sociétaires n'ont pas été fournies : elles restent visibles
+// comme « à compléter » plutôt que d'être inventées.
+const sections = [
+  { id: 'editeur', title: 'Éditeur du site' },
+  { id: 'publication', title: 'Directeur de la publication' },
+  { id: 'hebergement', title: 'Hébergement' },
+  { id: 'propriete', title: 'Propriété intellectuelle' },
+  { id: 'responsabilite', title: 'Responsabilité' },
+  { id: 'liens', title: 'Liens externes' },
+  { id: 'donnees', title: 'Données personnelles' },
+  { id: 'credits', title: 'Crédits' },
+  { id: 'droit', title: 'Droit applicable' },
+] as const;
+---
+
+<LegalPage
+  title="Mentions légales"
+  description="Mentions légales du site orli-consulting.com : éditeur, hébergement, propriété intellectuelle et responsabilité."
+  updated="2026-09-27"
+  sections={sections}
+>
+  <h2 id="editeur">Éditeur du site</h2>
+  <p>
+    Le site <strong>orli-consulting.com</strong> est édité par <strong>{company.name}</strong>, cabinet de conseil en comptabilité.
+  </p>
+  <ul>
+    <li>Forme juridique&nbsp;: <span class="todo">à compléter</span></li>
+    <li>Capital social&nbsp;: <span class="todo">à compléter</span></li>
+    <li>RCCM&nbsp;: <span class="todo">à compléter</span></li>
+    <li>Numéro de compte contribuable (NCC)&nbsp;: <span class="todo">à compléter</span></li>
+    <li>
+      Siège&nbsp;: {company.address.street}, {company.address.district}, {company.address.city}, {company.address.country}
+    </li>
+    <li>
+      Téléphone&nbsp;:{' '}
+      {
+        company.phones.map((phone, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a href={phone.href}>{phone.display}</a>
+          </>
+        ))
+      }
+    </li>
+    <li>Email&nbsp;: <a href={`mailto:${company.email}`}>{company.email}</a></li>
+  </ul>
+
+  <h2 id="publication">Directeur de la publication</h2>
+  <p><span class="todo">Nom et fonction à compléter</span></p>
+
+  <h2 id="hebergement">Hébergement</h2>
+  <p>
+    Le site est hébergé par <strong>{host.name}</strong>, {host.form}, {host.address} — {host.registration}.
+    Site&nbsp;: <a href={host.url} rel="noopener" target="_blank">www.lws.fr</a>.
+  </p>
+
+  <h2 id="propriete">Propriété intellectuelle</h2>
+  <p>
+    L'ensemble des contenus de ce site — textes, mise en page, logo et éléments graphiques — est la propriété de {company.name},
+    sauf mention contraire. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est
+    interdite.
+  </p>
+
+  <h2 id="responsabilite">Responsabilité</h2>
+  <p>
+    Les informations publiées sur ce site, y compris les articles du blog, sont fournies à titre d'information générale. Elles
+    ne constituent pas un conseil adapté à votre situation&nbsp;: pour toute décision, rapprochez&#8209;vous d'un consultant du
+    cabinet.
+  </p>
+  <p>
+    {company.name} s'efforce de tenir ces informations exactes et à jour, sans pouvoir garantir l'absence d'erreur ou
+    d'omission.
+  </p>
+
+  <h2 id="liens">Liens externes</h2>
+  <p>
+    Le site peut renvoyer vers des sites tiers (plan d'accès, textes officiels…). {company.name} n'exerce aucun contrôle sur
+    leur contenu et ne saurait en être tenu responsable.
+  </p>
+
+  <h2 id="donnees">Données personnelles</h2>
+  <p>
+    Le traitement des informations transmises par les formulaires est décrit dans notre
+    <a href="/confidentialite/">politique de confidentialité</a>.
+  </p>
+
+  <h2 id="credits">Crédits</h2>
+  <p>
+    Polices de caractères&nbsp;: Schibsted Grotesk et Fragment Mono, distribuées sous licence SIL Open Font License 1.1 et
+    servies depuis nos propres serveurs.
+  </p>
+
+  <h2 id="droit">Droit applicable</h2>
+  <p>Le présent site et les présentes mentions sont soumis au droit ivoirien.</p>
+</LegalPage>

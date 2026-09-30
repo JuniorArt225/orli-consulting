@@ -1,0 +1,247 @@
+---
+import Icon from '@/components/Icon.astro';
+import { company, poles, type PoleSlug } from '@/lib/content';
+
+interface Props {
+  /** `id` de l'élément, cible des ancres #diagnostic. */
+  id?: string;
+  class?: string;
+  /** Pôle présélectionné (pages pôles). */
+  pole?: PoleSlug;
+  /** Ajoute le nom du contact et un champ message (page Contact). */
+  extended?: boolean;
+  /** Niveau du titre du bloc, selon la page. */
+  headingLevel?: 'h2' | 'h3';
+  title?: string;
+}
+
+const {
+  id,
+  class: className = '',
+  pole,
+  extended = false,
+  headingLevel = 'h2',
+  title = 'Demandez votre diagnostic gratuit',
+} = Astro.props;
+
+/**
+ * Le site est statique : le formulaire poste vers un service externe
+ * (Formspree, Web3Forms, Basin…) défini dans PUBLIC_FORM_ENDPOINT.
+ * Sans endpoint configuré, on bascule sur un `mailto:` pour ne jamais
+ * présenter un formulaire mort en production.
+ */
+// `||` et non `??` : un secret GitHub absent arrive ici comme chaîne vide.
+const endpoint = (import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined) || undefined;
+const action = endpoint ?? `mailto:${company.email}`;
+
+// Identifiants uniques : plusieurs formulaires peuvent cohabiter sur une page.
+const uid = id ?? `form-${Math.random().toString(36).slice(2, 8)}`;
+const f = (name: string) => `${uid}-${name}`;
+const Heading = headingLevel;
+---
+
+<div id={id} data-form-root class={`form-root ${className}`}>
+  <div data-form-intro>
+    <Heading class="text-xl font-bold tracking-[-0.02em] text-navy sm:text-2xl">{title}</Heading>
+    <p class="mt-1.5 text-sm text-navy/70">Sans engagement. Réponse d'un consultant sous 48&nbsp;h.</p>
+  </div>
+
+  <form
+    data-orli-form
+    action={action}
+    method="post"
+    enctype={endpoint ? undefined : 'text/plain'}
+    class="mt-6"
+  >
+    <!-- Piège à robots : un humain ne remplit jamais ce champ. -->
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <input type="hidden" name="_subject" value="Demande de diagnostic — site ORLI Consulting" />
+
+    <div class="grid gap-3">
+      {
+        extended && (
+          <div>
+            <label class="sr-only" for={f('name')}>Votre nom</label>
+            <input id={f('name')} name="nom" type="text" autocomplete="name" placeholder="Votre nom" class="field-input" />
+          </div>
+        )
+      }
+
+      <div>
+        <label class="sr-only" for={f('company')}>Nom de l'entreprise</label>
+        <input
+          id={f('company')}
+          name="entreprise"
+          type="text"
+          required
+          autocomplete="organization"
+          placeholder="Nom de l'entreprise"
+          data-missing="Indiquez le nom de votre entreprise."
+          aria-describedby={f('company-error')}
+          class="field-input"
+        />
+        <p id={f('company-error')} class="field-error" hidden></p>
+      </div>
+
+      <div>
+        <label class="sr-only" for={f('email')}>Email professionnel</label>
+        <input
+          id={f('email')}
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          inputmode="email"
+          placeholder="Email professionnel"
+          data-missing="Indiquez l'email où vous répondre."
+          aria-describedby={f('email-error')}
+          class="field-input"
+        />
+        <p id={f('email-error')} class="field-error" hidden></p>
+      </div>
+
+      <div>
+        <label class="sr-only" for={f('phone')}>Téléphone / WhatsApp</label>
+        <input
+          id={f('phone')}
+          name="telephone"
+          type="tel"
+          autocomplete="tel"
+          inputmode="tel"
+          pattern="[0-9\+\(\)\.\s\-]{8,20}"
+          placeholder="Téléphone / WhatsApp"
+          data-mismatch="Chiffres, espaces et + uniquement."
+          aria-describedby={f('phone-error')}
+          class="field-input tabular"
+        />
+        <p id={f('phone-error')} class="field-error" hidden></p>
+      </div>
+
+      <div>
+        <label class="sr-only" for={f('pole')}>Pôle concerné</label>
+        <select
+          id={f('pole')}
+          name="pole"
+          required
+          data-missing="Choisissez un pôle — ou «&nbsp;Je ne sais pas encore&nbsp;»."
+          aria-describedby={f('pole-error')}
+          class="field-input"
+        >
+          <option value="" disabled selected={!pole}>Pôle concerné</option>
+          {
+            poles.map((item) => (
+              <option value={item.title} data-slug={item.slug} selected={item.slug === pole}>
+                {item.title}
+              </option>
+            ))
+          }
+          <option value="Je ne sais pas encore" data-slug="inconnu">Je ne sais pas encore</option>
+        </select>
+        <p id={f('pole-error')} class="field-error" hidden></p>
+      </div>
+
+      {
+        extended && (
+          <div>
+            <label class="sr-only" for={f('message')}>Votre besoin en quelques mots</label>
+            <textarea id={f('message')} name="message" rows="4" placeholder="Votre besoin en quelques mots" class="field-input" />
+          </div>
+        )
+      }
+
+      <div class="mt-1 flex">
+        <button type="submit" class="btn btn-navy submit-button flex-1">
+          <span class="submit-label">Envoyer ma demande</span>
+          <Icon name="arrow-right" class="submit-arrow h-4 w-4" data-icon="arrow" />
+          <span class="submit-spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+    <p class="mt-4 text-center text-[13px] text-navy/70">
+      <a href="/confidentialite/" class="hover:text-navy hover:underline">Vos données restent confidentielles.</a>
+    </p>
+  </form>
+
+  <p data-form-error hidden role="alert" class="mt-4 text-sm leading-relaxed font-medium text-danger">
+    L'envoi n'a pas abouti. Réessayez dans un instant, ou écrivez&#8209;nous à
+    <a href={`mailto:${company.email}`} class="font-semibold text-navy underline">{company.email}</a>.
+  </p>
+
+  <!-- Confirmation : le cachet « Reçu », daté du jour par le script. -->
+  <div data-form-success hidden class="py-4 text-center">
+    <div data-stamp class="stamp mx-auto" aria-hidden="true">
+      <span class="stamp-title">Reçu</span>
+      <span class="stamp-date font-mono" data-stamp-date></span>
+      <span class="stamp-by font-semibold">ORLI Consulting</span>
+    </div>
+    <p tabindex="-1" class="mt-8 text-xl font-bold tracking-[-0.02em] text-navy outline-none">
+      Merci, votre demande est bien arrivée.
+    </p>
+    <p class="mx-auto mt-2 max-w-sm text-[15px] leading-relaxed text-navy/70">
+      Un consultant vous répond sous 48&nbsp;h. Besoin d'aller plus vite&nbsp;? Appelez le
+      <a href={company.phones[0].href} class="font-semibold whitespace-nowrap text-navy underline decoration-navy/35 decoration-2 underline-offset-4 hover:decoration-navy">{company.phones[0].display}</a>.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* Bouton d'envoi : la flèche cède la place à un indicateur de chargement. */
+  .submit-spinner {
+    position: absolute;
+    right: 1.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    border: 2px solid rgb(255 255 255 / 0.35);
+    border-top-color: #fff;
+    opacity: 0;
+  }
+
+  .submit-button[aria-busy='true'] {
+    cursor: progress;
+  }
+
+  .submit-button[aria-busy='true'] .submit-arrow {
+    opacity: 0;
+  }
+
+  .submit-button[aria-busy='true'] .submit-spinner {
+    opacity: 1;
+    animation: var(--animate-spin-slow);
+  }
+
+  /* Cachet encré, légèrement de travers, comme sur un bordereau. */
+  .stamp {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.85rem 1.6rem 0.95rem;
+    border: 3px double var(--color-gold-700);
+    border-radius: 10px;
+    color: var(--color-gold-700);
+    transform: rotate(-8deg);
+    box-shadow: inset 0 0 0 1px rgb(161 98 7 / 0.25);
+  }
+
+  .stamp-title {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .stamp-date {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+  }
+
+  .stamp-by {
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+</style>

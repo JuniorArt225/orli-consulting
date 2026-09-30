@@ -1,0 +1,151 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import DiagnosticForm from '@/components/DiagnosticForm.astro';
+import Journey from '@/components/Journey.astro';
+import JourneyStep from '@/components/JourneyStep.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ContactTable from '@/components/ContactTable.astro';
+import OfferList from '@/components/OfferList.astro';
+import PoleList from '@/components/PoleList.astro';
+import Faq from '@/components/Faq.astro';
+import CtaBanner from '@/components/CtaBanner.astro';
+import Icon from '@/components/Icon.astro';
+import { faq, getPole, methodSteps, poles, values, type PoleSlug } from '@/lib/content';
+import { offerAnchor } from '@/lib/anchors';
+
+// Une page par pôle, générée au build.
+export const getStaticPaths = (() => poles.map((pole) => ({ params: { slug: pole.slug } }))) satisfies GetStaticPaths;
+
+const pole = getPole(Astro.params.slug as PoleSlug);
+const free = pole.offers.find((offer) => offer.free);
+const step = (i: number) => methodSteps[i];
+---
+
+<BaseLayout
+  title={`${pole.title} — ORLI Consulting`}
+  description={`${pole.title} — ${pole.description} Diagnostic gratuit, réponse d'un consultant sous 48 h.`}
+>
+  <PageHero crumbs={[{ label: 'Nos pôles', href: '/poles/' }, { label: pole.title }]} title={pole.title} lead={pole.description}>
+    <p class="mt-10 text-[15px] font-semibold text-white">Vous êtes dans l'une de ces situations&nbsp;?</p>
+    <ul class="mt-4 divide-y divide-white/12 border-y border-white/12">
+      {
+        pole.situations.map((situation) => (
+          <li>
+            <a href={`#${offerAnchor('offre', situation.offer)}`} class="situation group">
+              <span class="text-[15px] text-white/90 transition-colors group-hover:text-white">{situation.label}</span>
+              <span class="inline-flex shrink-0 items-center gap-1.5 text-[13px] text-white/60 transition-colors group-hover:text-white">
+                {situation.offer}
+                <Icon name="arrow-down" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div slot="aside" class="rounded-2xl bg-white p-5 text-navy shadow-[0_40px_80px_-40px_rgb(0_0_0/0.75)] sm:p-7">
+      <DiagnosticForm id="diagnostic" pole={pole.slug} />
+    </div>
+  </PageHero>
+
+  <Journey steps={methodSteps} class="py-20 sm:py-24 lg:py-32" label={`Parcours — ${pole.title}`}>
+    <div slot="intro">
+      <SectionHeading
+        title="Votre parcours, étape par étape"
+        description={`Ce qui se passe entre votre premier appel et le suivi de vos échéances, pour le pôle ${pole.title}.`}
+      />
+    </div>
+
+    <JourneyStep number={1} title={step(0).title} lead={step(0).description}>
+      <ContactTable formHref="#diagnostic" />
+    </JourneyStep>
+
+    <JourneyStep number={2} title={step(1).title} lead={step(1).description}>
+      {
+        free ? (
+          <div class="flex flex-col gap-6 rounded-2xl bg-gray-light p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div>
+              <p class="text-xl font-bold tracking-[-0.02em] text-navy">{free.title}</p>
+            </div>
+            <a href="#diagnostic" class="btn btn-navy shrink-0">
+              Le demander
+              <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+            </a>
+          </div>
+        ) : (
+          <div class="flex flex-col gap-6 rounded-2xl bg-gray-light p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <p class="max-w-xl text-[16px] leading-relaxed text-navy/75">
+              Choisissez «&nbsp;{pole.title}&nbsp;» dans le formulaire&nbsp;: le diagnostic fait le point sur votre situation avant
+              toute proposition.
+            </p>
+            <a href="#diagnostic" class="btn btn-navy shrink-0">
+              Demander le diagnostic
+              <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+            </a>
+          </div>
+        )
+      }
+    </JourneyStep>
+
+    <JourneyStep number={3} title={step(2).title} lead={step(2).description}>
+      <p class="mb-5 text-lg font-bold text-navy">Les offres du pôle {pole.title}</p>
+      <OfferList offers={pole.offers} anchorPrefix="offre" />
+    </JourneyStep>
+
+    <JourneyStep number={4} title={step(3).title} lead={step(3).description}>
+      <dl class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+        {
+          values.map((value) => (
+            <div class="border-t border-navy/12 pt-5 pb-5">
+              <dt class="text-lg font-bold tracking-[-0.015em] text-navy">{value.title}</dt>
+              <dd class="mt-1.5 text-[15px] leading-relaxed text-navy/70">{value.description}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </JourneyStep>
+
+    <JourneyStep number={5} title={step(4).title} lead={step(4).description}>
+      <p class="mb-2 text-lg font-bold text-navy">Les autres pôles du cabinet</p>
+      <PoleList exclude={pole.slug} headingLevel="h4" />
+    </JourneyStep>
+  </Journey>
+
+  <section class="bg-gray-light py-20 sm:py-24 lg:py-28" aria-labelledby="faq-title">
+    <div class="container-orli grid gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-4">
+        <h2 id="faq-title" class="text-title font-extrabold text-navy">Questions fréquentes</h2>
+        <p class="mt-4 text-[17px] leading-relaxed text-navy/75">
+          Une autre question&nbsp;?
+          <a href="/contact/" class="font-semibold text-navy underline decoration-navy/35 decoration-2 underline-offset-4 hover:decoration-navy">Écrivez&#8209;nous</a>.
+        </p>
+      </div>
+      <div class="lg:col-span-8">
+        <Faq items={[pole.faq, ...faq]} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  /* Lignes à filets : la situation, puis le pack qui y répond (visible à toutes les tailles). */
+  .situation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-block: 0.85rem;
+  }
+
+  @media (min-width: 640px) {
+    .situation {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+/**
+ * « Notre méthode » — les cinq étapes de la maquette.
+ * À l'arrivée à l'écran, les barres se remplissent l'une après l'autre jusqu'à
+ * l'état de la maquette : étape 1 franchie (navy), étape 2 en cours (or).
+ */
+import { methodSteps } from '@/lib/content';
+---
+
+<ol data-method class="method grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
+  {
+    methodSteps.map((step, i) => (
+      <li class:list={['step', { 'is-done': i === 0, 'is-current': i === 1 }]} style={`--i: ${i}`}>
+        <span class="step-bar" aria-hidden="true" />
+        <p class="mt-5 font-mono text-[12px] tracking-[0.12em] text-navy/55">Étape {i + 1}</p>
+        <h3 class="mt-2 text-lg leading-snug font-bold tracking-[-0.015em] text-navy">{step.title}</h3>
+        <p class="mt-2 text-[15px] leading-relaxed text-navy/70">{step.description}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-method]').forEach((list) => {
+    if (!('IntersectionObserver' in window)) return list.classList.add('is-drawn');
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        list.classList.add('is-drawn');
+        observer.disconnect();
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(list);
+  });
+</script>
+
+<style>
+  .step-bar {
+    position: relative;
+    display: block;
+    height: 3px;
+    border-radius: 3px;
+    background: rgb(10 25 47 / 0.12);
+    overflow: hidden;
+  }
+
+  .step-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 700ms var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * 220ms);
+  }
+
+  .is-done .step-bar::after {
+    background: var(--color-navy);
+  }
+
+  .is-current .step-bar::after {
+    background: var(--color-gold);
+  }
+
+  .method.is-drawn :is(.is-done, .is-current) .step-bar::after,
+  :global(html:not(.js)) :is(.is-done, .is-current) .step-bar::after {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step-bar::after {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import CtaBanner from '@/components/CtaBanner.astro';
+import Icon from '@/components/Icon.astro';
+import { getAllPosts } from '@/lib/sanity';
+import { fr } from '@/lib/typo';
+
+const posts = await getAllPosts();
+---
+
+<BaseLayout
+  title="Blog — ORLI Consulting"
+  description="Échéances fiscales, droit des sociétés, gestion des actifs : nos consultants décryptent ce qui change pour les entreprises ivoiriennes."
+>
+  <PageHero
+    crumbs={[{ label: 'Blog' }]}
+    title="Comprendre vos obligations, sans jargon"
+    lead={fr(
+      'Échéances fiscales, droit des sociétés, gestion des actifs : nos consultants décryptent ce qui change pour les entreprises ivoiriennes.',
+    )}
+  />
+
+  <section class="py-16 sm:py-20 lg:py-24">
+    <div class="container-orli">
+      {
+        posts.length > 0 ? (
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {posts.map((post, i) => (
+              <BlogCard post={post} eager={i < 3} headingLevel="h2" />
+            ))}
+          </div>
+        ) : (
+          <div class="flex flex-col items-start gap-5 rounded-2xl border border-dashed border-navy/20 p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+            <p class="flex items-center gap-3 text-[17px] text-navy/75">
+              <Icon name="file" class="h-5 w-5 text-navy/55" />
+              Les premiers articles arrivent très bientôt.
+            </p>
+            <a href="/contact/" class="btn btn-navy">
+              Poser une question à un consultant
+              <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

@@ -1,0 +1,107 @@
+---
+import Logo from '@/components/Logo.astro';
+import { company, poles } from '@/lib/content';
+
+// Texte du pied de page : identique à la maquette validée par le client.
+const cabinetLinks = [
+  { label: 'Qui sommes‑nous', href: '/cabinet/' },
+  { label: 'Notre méthode', href: '/#methode' },
+  { label: 'Blog', href: '/blog/' },
+  { label: 'Contact', href: '/contact/' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative isolate overflow-hidden bg-navy text-white">
+  <div class="container-orli pt-16 pb-8 sm:pt-20">
+    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-4">
+        <Logo />
+        <p class="mt-5 max-w-xs text-[15px] leading-relaxed text-white/70">{company.tagline}</p>
+      </div>
+
+      <nav aria-labelledby="footer-poles" class="lg:col-span-3">
+        <p id="footer-poles" class="eyebrow">Nos pôles</p>
+        <ul class="mt-5 space-y-3 text-[15px]">
+          {
+            poles.map((pole) => (
+              <li>
+                <a href={pole.href} class="link-draw text-white/75 transition-colors hover:text-white">
+                  {pole.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footer-cabinet" class="lg:col-span-2">
+        <p id="footer-cabinet" class="eyebrow">Cabinet</p>
+        <ul class="mt-5 space-y-3 text-[15px]">
+          {
+            cabinetLinks.map((link) => (
+              <li>
+                <a href={link.href} class="link-draw text-white/75 transition-colors hover:text-white">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="lg:col-span-3" role="group" aria-labelledby="footer-contact">
+        <p id="footer-contact" class="eyebrow">Contact</p>
+        <ul class="mt-5 space-y-3 text-[15px]">
+          {
+            company.phones.map((phone) => (
+              <li>
+                <a href={phone.href} class="link-draw tabular text-white/75 transition-colors hover:text-white">
+                  {phone.display}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href={`mailto:${company.email}`} class="link-draw text-white/75 transition-colors hover:text-white">
+              {company.email}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 text-[13px] text-white/60 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {year} {company.name}. Tous droits réservés.</p>
+      <p>
+        <a href="/mentions-legales/" class="link-draw transition-colors hover:text-white">Mentions légales</a>
+        <span aria-hidden="true"> · </span>
+        <a href="/confidentialite/" class="link-draw transition-colors hover:text-white">Politique de confidentialité</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Signature : le nom du cabinet, en très grand, clôt chaque page. -->
+  <p class="wordmark" aria-hidden="true">ORLI</p>
+</footer>
+
+<style>
+  .wordmark {
+    margin: 0 0 -0.22em;
+    padding-inline: 0.04em;
+    font-size: clamp(7rem, 31vw, 27rem);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    text-align: center;
+    color: var(--color-navy-800);
+    user-select: none;
+    background: linear-gradient(180deg, var(--color-navy-700) 0%, var(--color-navy-800) 55%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+</style>

@@ -1,0 +1,610 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-27T19:46:04Z",
+  "title": "Design System: ORLI Consulting",
+  "extensions": {
+    "colorMeta": {
+      "navy": {
+        "role": "primary",
+        "displayName": "Ledger Navy",
+        "canonical": "#0a192f",
+        "oklch": "oklch(21.4% 0.048 258)",
+        "tonalRamp": [
+          "#010a1f",
+          "#15243b",
+          "#304059",
+          "#4d5f79",
+          "#6e819d",
+          "#92a6c3",
+          "#b7cceb",
+          "#e5effe"
+        ]
+      },
+      "navy-800": {
+        "role": "primary",
+        "displayName": "Chapter Navy",
+        "canonical": "#112240",
+        "oklch": "oklch(25.5% 0.061 260.9)",
+        "tonalRamp": [
+          "#000924",
+          "#122341",
+          "#2d4060",
+          "#4a5e80",
+          "#6c81a5",
+          "#8fa6cc",
+          "#b4ccf3",
+          "#e6effe"
+        ]
+      },
+      "navy-700": {
+        "role": "primary",
+        "displayName": "Lamplight Navy",
+        "canonical": "#1b3157",
+        "oklch": "oklch(31.6% 0.074 260.6)",
+        "tonalRamp": [
+          "#000826",
+          "#0d2247",
+          "#283f67",
+          "#455e87",
+          "#6781ad",
+          "#8aa6d3",
+          "#afccfb",
+          "#e6effe"
+        ]
+      },
+      "gold": {
+        "role": "secondary",
+        "displayName": "Forward Gold",
+        "canonical": "#eab308",
+        "oklch": "oklch(79.5% 0.162 86)",
+        "tonalRamp": [
+          "#110a00",
+          "#2f2200",
+          "#513c05",
+          "#75590e",
+          "#a07a10",
+          "#cc9d16",
+          "#f9c22c",
+          "#feedc7"
+        ]
+      },
+      "gold-hover": {
+        "role": "secondary",
+        "displayName": "Lit Gold",
+        "canonical": "#f2c229",
+        "oklch": "oklch(83.4% 0.161 89.4)",
+        "tonalRamp": [
+          "#100a00",
+          "#2e2200",
+          "#4f3d05",
+          "#725a0f",
+          "#9c7c10",
+          "#c89f17",
+          "#f4c42d",
+          "#feedc1"
+        ]
+      },
+      "gold-600": {
+        "role": "secondary",
+        "displayName": "Deep Gold",
+        "canonical": "#ca9a04",
+        "oklch": "oklch(71.2% 0.145 86)",
+        "tonalRamp": [
+          "#110a00",
+          "#2f2202",
+          "#513c04",
+          "#75590b",
+          "#a07a0a",
+          "#cd9d0e",
+          "#f4c34a",
+          "#ffedc6"
+        ]
+      },
+      "gold-700": {
+        "role": "secondary",
+        "displayName": "Stamp Ochre",
+        "canonical": "#a16207",
+        "oklch": "oklch(55.4% 0.121 66.4)",
+        "tonalRamp": [
+          "#140800",
+          "#361d00",
+          "#5b3606",
+          "#854f00",
+          "#b07020",
+          "#d7944b",
+          "#fdbc78",
+          "#feebd8"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Sheet White",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "gray-light": {
+        "role": "neutral",
+        "displayName": "Paper Grey",
+        "canonical": "#f3f4f6",
+        "oklch": "oklch(96.7% 0.003 264.5)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5f",
+          "#7f8082",
+          "#a4a4a6",
+          "#c9cacc",
+          "#edeef0"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Ledger Rule",
+        "canonical": "rgb(10 25 47 / 0.12)",
+        "tonalRamp": [
+          "#0a192f",
+          "#6c7582",
+          "#b6bac1",
+          "#ced1d5",
+          "#dadde0",
+          "#e2e3e6",
+          "#e7e8ea",
+          "#ebedee"
+        ],
+        "rampNote": "Navy alphas the build uses for lines on white, composited: 100% (focused field), 60% (outline hover), 30% (tag), 20% (outline button), 15% (column heads), 12% (rows), 10% (seams), 8% (trust band)."
+      },
+      "hairline-on-navy": {
+        "role": "neutral",
+        "displayName": "Night Rule",
+        "canonical": "rgb(255 255 255 / 0.12)",
+        "tonalRamp": [
+          "#233044",
+          "#273548",
+          "#2c394c",
+          "#3b4759",
+          "#475363",
+          "#6c7582",
+          "#9198a1",
+          "#9da3ac"
+        ],
+        "rampNote": "White alphas the build uses for lines on navy, composited: 10% (chrome), 12% (rows), 14% (hero rail), 20% (chip), 25% (outline button), 40% (tag), 55% (chip hover), 60% (outline hover)."
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Correction Red",
+        "canonical": "#b42318",
+        "oklch": "oklch(50% 0.182 29.5)",
+        "tonalRamp": [
+          "#1e0000",
+          "#4b0201",
+          "#7a0d06",
+          "#ad1a10",
+          "#d74839",
+          "#fd7462",
+          "#feb6aa",
+          "#fee9e5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page h1 in heroes only, one per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section h2s and journey chapter titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Pôle names in ruled rows (28px from 640px), audience and block headings."
+      },
+      "title-sm": {
+        "displayName": "Title Small",
+        "purpose": "Value names, next-step headings, the form's confirmation line; form and router headings below 640px."
+      },
+      "item": {
+        "displayName": "Item",
+        "purpose": "Offer names, FAQ questions, router offers (18px from 640px)."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Paragraph under a display or headline, max 42rem (18px from 640px)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text in chapters and rows."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Offer details, contact rows, footer lists, router intro."
+      },
+      "prose": {
+        "displayName": "Prose",
+        "purpose": "Legal pages and articles, max 68ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels; metadata and breadcrumbs at 400, group labels at 600."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Header nav links and situation chips."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "All buttons (14px in compact header and footer buttons); never wraps."
+      },
+      "tag": {
+        "displayName": "Tag",
+        "purpose": "The \"Gratuit\" outline tag."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Journey step numbers, durations, dates, reference codes and the hero fact line only."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Footer signature \"ORLI\", Chapter Navy on Ledger Navy, aria-hidden."
+      }
+    },
+    "shadows": [
+      {
+        "name": "floating-form",
+        "value": "0 40px 80px -40px rgb(0 0 0 / 0.75), 0 2px 8px rgb(0 0 0 / 0.18)",
+        "purpose": "White diagnostic card over the navy home hero; pôle and contact asides use the first layer only."
+      },
+      {
+        "name": "dropdown",
+        "value": "0 30px 60px -24px rgb(3 10 22 / 0.55), 0 2px 6px rgb(3 10 22 / 0.12)",
+        "purpose": "\"Nos pôles\" panel under the navy header."
+      },
+      {
+        "name": "header-detached",
+        "value": "0 14px 30px -18px rgb(3 10 22 / 0.85)",
+        "purpose": "Sticky header once the page has scrolled 8px."
+      },
+      {
+        "name": "gold-button-lift",
+        "value": "inset 0 1px 0 rgb(255 255 255 / 0.35), 0 8px 18px -10px rgb(3 10 22 / 0.55)",
+        "purpose": "Lit top edge and tight drop under the gold button."
+      },
+      {
+        "name": "navy-button-lift",
+        "value": "0 10px 24px -14px rgb(10 25 47 / 0.8)",
+        "purpose": "Soft drop under the navy button."
+      },
+      {
+        "name": "current-step-ring",
+        "value": "inset 0 0 0 2px #eab308, 0 0 0 3px #ffffff, 0 0 0 4.5px #eab308",
+        "purpose": "Current step dot on the journey rail (scaled 1.1)."
+      },
+      {
+        "name": "field-error-halo",
+        "value": "0 0 0 4px rgb(180 35 24 / 0.1)",
+        "purpose": "Invalid field, together with the Correction Red border."
+      },
+      {
+        "name": "hero-lamp",
+        "value": "radial-gradient(closest-side, rgb(27 49 87 / 0.9), transparent 70%)",
+        "purpose": "Not a shadow: the soft light behind hero forms on navy (0.85 on page heroes). Depth by light."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "House curve for entrances, draws and most state changes."
+      },
+      {
+        "name": "press",
+        "value": "transform 120ms ease-out-expo: translateY(1px) scale(0.985)",
+        "purpose": "Button press; chips scale to 0.97."
+      },
+      {
+        "name": "state",
+        "value": "160–220ms ease",
+        "purpose": "Color, border, background and opacity changes on hover, focus and selection."
+      },
+      {
+        "name": "arrow-nudge",
+        "value": "transform 260ms ease-out-expo: translateX(3px)",
+        "purpose": "Trailing arrow in buttons on hover; arrows after links slide 2–4px in 300ms."
+      },
+      {
+        "name": "draw-underline",
+        "value": "background-size 0% → 100% × 1px, 320ms ease-out-expo",
+        "purpose": "Text links draw a currentColor underline left to right; nav underlines scale from the center."
+      },
+      {
+        "name": "page-hero-entrance",
+        "value": "title: clip-path mask rise 1000ms; lead and actions: fade up 12px, 800ms at 180 / 260 / 320ms; aside: rise 18px + scale 0.985, 900ms at 140ms",
+        "purpose": "The one authored moment of every page hero; CSS only, plays once on load."
+      },
+      {
+        "name": "hero-choreography",
+        "value": "double rule at 620 / 760ms; step-01 segment grows 900ms at 900ms",
+        "purpose": "Home hero only: the rule and the first rail step follow the title."
+      },
+      {
+        "name": "double-rule-draw",
+        "value": "scaleX 0 → 1, 700ms ease-out-expo, second stroke +140ms",
+        "purpose": "Draws under the key word when it enters the viewport (IntersectionObserver, 15% threshold)."
+      },
+      {
+        "name": "rail-fill",
+        "value": "scaleY(var(--progress)) 160ms linear; dot states 260ms; current dot scale 1.1 in 360ms",
+        "purpose": "Journey rail follows a reading point at 42% of the viewport height; runs only while on screen."
+      },
+      {
+        "name": "stamp",
+        "value": "520ms ease-out-expo: scale 1.9 → 1, rotate −18° → −8°, blur 6px → 0",
+        "purpose": "\"Reçu\" confirmation after a successful submit."
+      },
+      {
+        "name": "view-transition",
+        "value": "old page: fade + rise 6px, 160ms ease-in; new page: fade + drop 10px, 360ms ease-out-expo",
+        "purpose": "Cross-document navigation; the header keeps its own view-transition name."
+      },
+      {
+        "name": "header-hide",
+        "value": "translateY(-100%), 420ms ease-out-expo",
+        "purpose": "Header hides on scroll down past 240px and returns on scroll up."
+      },
+      {
+        "name": "overlay-open",
+        "value": "dropdown: opacity 180ms + transform 320ms; mobile menu: 420ms, items fade up 480ms, 40ms apart",
+        "purpose": "Interaction-triggered openings (hover intent 90ms open / 220ms close for the dropdown)."
+      },
+      {
+        "name": "disclosure",
+        "value": "FAQ block-size 380ms, icon rotates 45° in 360ms; router panel fades up 8px in 380ms",
+        "purpose": "Accordion and tab panel changes."
+      },
+      {
+        "name": "spinner",
+        "value": "spin 0.9s linear infinite",
+        "purpose": "Submit button while sending (aria-busy)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Entrances, view transitions, the stamp and the menu stagger are off; the double rule appears without drawing; the rail fill and FAQ height jump; smooth scrolling is off."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "short-desktop",
+        "value": "(min-width: 1024px) and (max-height: 860px)"
+      }
+    ],
+    "focus": [
+      {
+        "name": "focus-ring",
+        "value": "outline: 2px solid var(--focus); outline-offset: 3px",
+        "purpose": "--focus is navy on white, grey and gold surfaces and gold on navy and Chapter Navy, inherited from the nearest surface. Fields suppress the ring and turn their border solid navy instead."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Gold Button",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "Primary action on navy surfaces only (the free-diagnostic request). Lit Gold on hover, arrow nudges forward, gold focus ring on navy.",
+      "html": "<div class=\"ds-gold-canvas\"><a class=\"ds-btn-gold\" href=\"#diagnostic\">Demander mon diagnostic gratuit <svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a></div>",
+      "css": ".ds-gold-canvas { padding: 28px; background: var(--color-navy, #0a192f); } .ds-btn-gold { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 20px; border-radius: 8px; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); font-size: 15px; font-weight: 600; line-height: 1.5; white-space: nowrap; text-decoration: none; user-select: none; background: var(--color-gold, #eab308); color: var(--color-navy, #0a192f); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 8px 18px -10px rgb(3 10 22 / 0.55); transition: background-color 180ms ease, transform 120ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn-gold svg { transition: transform 260ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn-gold:hover { background: #f2c229; } .ds-btn-gold:hover svg { transform: translateX(3px); } .ds-btn-gold:active { transform: translateY(1px) scale(0.985); } .ds-btn-gold:focus-visible { outline: 2px solid var(--color-gold, #eab308); outline-offset: 3px; }"
+    },
+    {
+      "name": "Navy Button",
+      "kind": "button",
+      "refersTo": "button-navy",
+      "description": "Primary action on white, grey and gold surfaces (form submit, pôle links, the CTA band). Lamplight Navy on hover, navy focus ring.",
+      "html": "<div class=\"ds-navy-canvas\"><a class=\"ds-btn-navy\" href=\"/poles/comptabilite/\">Découvrir le pôle <svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a></div>",
+      "css": ".ds-navy-canvas { padding: 28px; background: #ffffff; } .ds-btn-navy { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 20px; border-radius: 8px; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); font-size: 15px; font-weight: 600; line-height: 1.5; white-space: nowrap; text-decoration: none; user-select: none; background: var(--color-navy, #0a192f); color: #ffffff; box-shadow: 0 10px 24px -14px rgb(10 25 47 / 0.8); transition: background-color 180ms ease, transform 120ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn-navy svg { transition: transform 260ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn-navy:hover { background: var(--color-navy-700, #1b3157); } .ds-btn-navy:hover svg { transform: translateX(3px); } .ds-btn-navy:active { transform: translateY(1px) scale(0.985); } .ds-btn-navy:focus-visible { outline: 2px solid var(--color-navy, #0a192f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Secondary action beside a filled button: navy hairline on light surfaces, white hairline on navy (button-line-light). Never filled.",
+      "html": "<div class=\"ds-line-canvas\"><div class=\"ds-line-on-light\"><a class=\"ds-btn-line\" href=\"/contact/?pole=comptabilite#diagnostic\">Diagnostic gratuit</a></div><div class=\"ds-line-on-navy\"><a class=\"ds-btn-line-light\" href=\"/poles/\">Voir nos pôles</a></div></div>",
+      "css": ".ds-line-canvas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); } .ds-line-on-light { padding: 28px; background: #ffffff; } .ds-line-on-navy { padding: 28px; background: var(--color-navy, #0a192f); } .ds-btn-line, .ds-btn-line-light { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 20px; border-radius: 8px; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); font-size: 15px; font-weight: 600; line-height: 1.5; white-space: nowrap; text-decoration: none; user-select: none; background: transparent; transition: background-color 180ms ease, border-color 180ms ease, transform 120ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn-line { border: 1px solid rgb(10 25 47 / 0.2); color: var(--color-navy, #0a192f); } .ds-btn-line:hover { border-color: rgb(10 25 47 / 0.6); background: rgb(10 25 47 / 0.03); } .ds-btn-line:focus-visible { outline: 2px solid var(--color-navy, #0a192f); outline-offset: 3px; } .ds-btn-line-light { border: 1px solid rgb(255 255 255 / 0.25); color: #ffffff; } .ds-btn-line-light:hover { border-color: rgb(255 255 255 / 0.6); background: rgb(255 255 255 / 0.05); } .ds-btn-line-light:focus-visible { outline: 2px solid var(--color-gold, #eab308); outline-offset: 3px; } .ds-btn-line:active, .ds-btn-line-light:active { transform: translateY(1px) scale(0.985); }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "field-input",
+      "description": "Diagnostic-form field: label above, optional note right-aligned, a navy 50% border (3.4:1 on white, the WCAG minimum for a field boundary) that turns solid navy with a soft navy ring on focus, Correction Red border and message after a first interaction.",
+      "html": "<div class=\"ds-form\"><div><label class=\"ds-field-label\" for=\"ds-field-company\">Nom de l'entreprise</label><input id=\"ds-field-company\" class=\"ds-field\" type=\"text\" autocomplete=\"organization\"></div><div><label class=\"ds-field-label\" for=\"ds-field-email\">Email professionnel</label><input id=\"ds-field-email\" class=\"ds-field\" type=\"email\" placeholder=\"nom@entreprise.ci\"></div><div><label class=\"ds-field-label\" for=\"ds-field-phone\">Téléphone <span class=\"ds-field-note\">facultatif</span></label><input id=\"ds-field-phone\" class=\"ds-field\" type=\"tel\" value=\"05 64 08 14 0A\" aria-invalid=\"true\" aria-describedby=\"ds-field-phone-error\"><p id=\"ds-field-phone-error\" class=\"ds-field-error\">Chiffres, espaces et + uniquement.</p></div></div>",
+      "css": ".ds-form { display: grid; gap: 16px; max-width: 380px; padding: 28px; border-radius: 16px; background: #ffffff; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-field-label { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: rgb(10 25 47 / 0.8); } .ds-field-note { font-weight: 400; color: rgb(10 25 47 / 0.6); } .ds-field { box-sizing: border-box; display: block; width: 100%; min-height: 48px; padding: 0 14px; border: 1px solid rgb(10 25 47 / 0.5); border-radius: 8px; background: #ffffff; color: var(--color-navy, #0a192f); font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); font-size: 15px; transition: border-color 160ms ease, box-shadow 160ms ease; } .ds-field::placeholder { color: rgb(10 25 47 / 0.6); } .ds-field:hover { border-color: rgb(10 25 47 / 0.75); } .ds-field:focus-visible { outline: none; border-color: var(--color-navy, #0a192f); box-shadow: 0 0 0 3px rgb(10 25 47 / 0.12); } .ds-field[aria-invalid=\"true\"] { border-color: var(--color-danger, #b42318); box-shadow: 0 0 0 4px rgb(180 35 24 / 0.1); } .ds-field-error { margin: 6px 0 0; font-size: 13px; font-weight: 500; color: var(--color-danger, #b42318); }"
+    },
+    {
+      "name": "Gratuit Tag",
+      "kind": "chip",
+      "refersTo": "tag-free",
+      "description": "Marks the free entry offers. Outline pill, navy on light and white on navy; never gold, never filled.",
+      "html": "<div class=\"ds-tag-canvas\"><p class=\"ds-tag-line\">Diagnostic comptable flash <span class=\"ds-tag\">Gratuit</span></p><p class=\"ds-tag-line ds-tag-line-navy\">Check-up conformité sociale <span class=\"ds-tag ds-tag-on-navy\">Gratuit</span></p></div>",
+      "css": ".ds-tag-canvas { display: grid; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-tag-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; padding: 20px 28px; background: #ffffff; color: var(--color-navy, #0a192f); font-size: 17px; font-weight: 600; line-height: 1.375; } .ds-tag-line-navy { background: var(--color-navy, #0a192f); color: #ffffff; } .ds-tag { display: inline-block; padding: 1px 8px; border: 1px solid rgb(10 25 47 / 0.3); border-radius: 9999px; font-size: 12px; font-weight: 600; line-height: 1.33; color: var(--color-navy, #0a192f); } .ds-tag-on-navy { border-color: rgb(255 255 255 / 0.4); color: #ffffff; }"
+    },
+    {
+      "name": "Situation Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "The needs router’s tablist, on navy only. The selected situation is the one gold chip; the offers that answer it follow as ruled rows.",
+      "html": "<div class=\"ds-chip-panel\"><p class=\"ds-chip-title\">Où en est votre entreprise ?</p><div class=\"ds-chips\" role=\"tablist\" aria-label=\"Votre situation\"><button type=\"button\" role=\"tab\" aria-selected=\"false\" class=\"ds-chip\">Je crée mon entreprise</button><button type=\"button\" role=\"tab\" aria-selected=\"true\" class=\"ds-chip\">Je veux fiabiliser mon organisation</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" class=\"ds-chip\">J'emploie des salariés</button></div></div>",
+      "css": ".ds-chip-panel { padding: 32px; border-radius: 16px; background: var(--color-navy, #0a192f); color: #ffffff; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-chip-title { margin: 0 0 24px; font-size: 24px; font-weight: 700; line-height: 1.33; letter-spacing: -0.02em; } .ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { min-height: 40px; padding: 0.45rem 0.95rem; border: 1px solid rgb(255 255 255 / 0.2); border-radius: 9999px; background: transparent; color: rgb(255 255 255 / 0.85); font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); font-size: 14.5px; font-weight: 500; cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 120ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-chip:hover { border-color: rgb(255 255 255 / 0.55); color: #ffffff; } .ds-chip:active { transform: scale(0.97); } .ds-chip:focus-visible { outline: 2px solid var(--color-gold, #eab308); outline-offset: 3px; } .ds-chip[aria-selected=\"true\"] { background: var(--color-gold, #eab308); border-color: var(--color-gold, #eab308); color: var(--color-navy, #0a192f); font-weight: 600; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Sticky navy header: logo lockup (gold double rule on hover), links with a white underline on hover and a gold underline on the current page, compact gold call to action.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-logo\" href=\"/\" aria-label=\"ORLI Consulting — accueil\"><span class=\"ds-logo-mark\">ORLI</span><span class=\"ds-logo-sub\">Consulting</span></a><nav aria-label=\"Navigation principale\"><ul class=\"ds-nav\"><li><a class=\"ds-nav-link\" href=\"/cabinet/\">Le cabinet</a></li><li><a class=\"ds-nav-link is-active\" href=\"/poles/\" aria-current=\"page\">Nos pôles</a></li><li><a class=\"ds-nav-link\" href=\"/#methode\">Méthode</a></li><li><a class=\"ds-nav-link\" href=\"/blog/\">Blog</a></li><li><a class=\"ds-nav-link\" href=\"/contact/\">Contact</a></li></ul></nav><a class=\"ds-header-cta\" href=\"/contact/#diagnostic\">Diagnostic gratuit <svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a></header>",
+      "css": ".ds-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; min-height: 72px; padding: 10px 32px; background: var(--color-navy, #0a192f); border-bottom: 1px solid rgb(255 255 255 / 0.1); font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-logo { display: inline-flex; align-items: baseline; gap: 8px; text-decoration: none; } .ds-logo-mark { position: relative; font-size: 22px; font-weight: 900; line-height: 1; letter-spacing: -0.03em; color: #ffffff; } .ds-logo-mark::before, .ds-logo-mark::after { content: \"\"; position: absolute; left: 0; right: 0; height: 2px; background: var(--color-gold, #eab308); transform: scaleX(0); transform-origin: left center; transition: transform 420ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-logo-mark::before { bottom: -5px; } .ds-logo-mark::after { bottom: -9px; transition-delay: 70ms; } .ds-logo:hover .ds-logo-mark::before, .ds-logo:hover .ds-logo-mark::after, .ds-logo:focus-visible .ds-logo-mark::before, .ds-logo:focus-visible .ds-logo-mark::after { transform: scaleX(1); } .ds-logo-sub { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-gold, #eab308); } .ds-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0; padding: 0; list-style: none; } .ds-nav-link { position: relative; display: inline-flex; align-items: center; padding: 0.6rem 0.8rem; border-radius: 0.5rem; font-size: 14.5px; font-weight: 500; color: rgb(255 255 255 / 0.78); text-decoration: none; transition: color 160ms ease; } .ds-nav-link::after { content: \"\"; position: absolute; left: 0.8rem; right: 0.8rem; bottom: 0.3rem; height: 2px; background: var(--color-gold, #eab308); transform: scaleX(0); transition: transform 320ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-nav-link:hover, .ds-nav-link.is-active { color: #ffffff; } .ds-nav-link:hover::after { background: rgb(255 255 255 / 0.45); transform: scaleX(1); } .ds-nav-link.is-active::after { background: var(--color-gold, #eab308); transform: scaleX(1); } .ds-header a:focus-visible { outline: 2px solid var(--color-gold, #eab308); outline-offset: 3px; } .ds-header-cta { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border-radius: 8px; background: var(--color-gold, #eab308); color: var(--color-navy, #0a192f); font-size: 14px; font-weight: 600; white-space: nowrap; text-decoration: none; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 8px 18px -10px rgb(3 10 22 / 0.55); transition: background-color 180ms ease; } .ds-header-cta svg { transition: transform 260ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-header-cta:hover { background: #f2c229; } .ds-header-cta:hover svg { transform: translateX(3px); }"
+    },
+    {
+      "name": "Journey Rail",
+      "kind": "custom",
+      "refersTo": "rail-dot",
+      "description": "Signature: the sticky five-step rail. The gold fill follows the reader; reached steps are gold, the current step is ringed with its number in Stamp Ochre, upcoming steps stay navy 62%.",
+      "html": "<div class=\"ds-rail-canvas\"><nav class=\"ds-rail\" aria-label=\"Étapes du parcours\"><span class=\"ds-rail-track\" aria-hidden=\"true\"><span class=\"ds-rail-fill\"></span></span><ol class=\"ds-rail-list\"><li><a class=\"ds-rail-link\" data-state=\"done\" href=\"#etape-1\"><span class=\"ds-rail-dot\" aria-hidden=\"true\"></span><span class=\"ds-rail-num\">01</span><span class=\"ds-rail-title\">Prise de contact</span></a></li><li><a class=\"ds-rail-link\" data-state=\"done\" href=\"#etape-2\"><span class=\"ds-rail-dot\" aria-hidden=\"true\"></span><span class=\"ds-rail-num\">02</span><span class=\"ds-rail-title\">Diagnostic gratuit</span></a></li><li><a class=\"ds-rail-link\" data-state=\"active\" aria-current=\"step\" href=\"#etape-3\"><span class=\"ds-rail-dot\" aria-hidden=\"true\"></span><span class=\"ds-rail-num\">03</span><span class=\"ds-rail-title\">Proposition sur-mesure</span></a></li><li><a class=\"ds-rail-link\" data-state=\"todo\" href=\"#etape-4\"><span class=\"ds-rail-dot\" aria-hidden=\"true\"></span><span class=\"ds-rail-num\">04</span><span class=\"ds-rail-title\">Réalisation</span></a></li><li><a class=\"ds-rail-link\" data-state=\"todo\" href=\"#etape-5\"><span class=\"ds-rail-dot\" aria-hidden=\"true\"></span><span class=\"ds-rail-num\">05</span><span class=\"ds-rail-title\">Suivi dans la durée</span></a></li></ol></nav></div>",
+      "css": ".ds-rail-canvas { padding: 24px 28px; background: #ffffff; } .ds-rail { --row: 3.5rem; position: relative; max-width: 300px; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-rail-list { position: relative; margin: 0; padding: 0; list-style: none; } .ds-rail-track { position: absolute; top: calc(var(--row) / 2); bottom: calc(var(--row) / 2); left: 5px; width: 2px; border-radius: 2px; background: rgb(10 25 47 / 0.1); } .ds-rail-fill { position: absolute; inset: 0; border-radius: inherit; background: var(--color-gold, #eab308); transform-origin: top center; transform: scaleY(var(--progress, 0.5)); transition: transform 160ms linear; } .ds-rail-link { position: relative; display: grid; grid-template-columns: 12px 2.25rem 1fr; align-items: center; gap: 0.9rem; height: var(--row); color: rgb(10 25 47 / 0.62); text-decoration: none; transition: color 200ms ease; } .ds-rail-link:hover { color: var(--color-navy, #0a192f); } .ds-rail-link:focus-visible { outline: 2px solid var(--color-navy, #0a192f); outline-offset: 3px; } .ds-rail-dot { width: 12px; height: 12px; border-radius: 9999px; background: #ffffff; box-shadow: inset 0 0 0 2px rgb(10 25 47 / 0.18); transition: box-shadow 260ms ease, background-color 260ms ease, transform 360ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-rail-num { font-family: var(--font-mono, \"Fragment Mono\", ui-monospace, SFMono-Regular, monospace); font-size: 12.5px; } .ds-rail-title { font-size: 15px; font-weight: 600; line-height: 1.25; } .ds-rail-link[data-state=\"done\"] { color: rgb(10 25 47 / 0.75); } .ds-rail-link[data-state=\"done\"] .ds-rail-dot { background: var(--color-gold, #eab308); box-shadow: inset 0 0 0 2px var(--color-gold, #eab308); } .ds-rail-link[data-state=\"active\"] { color: var(--color-navy, #0a192f); } .ds-rail-link[data-state=\"active\"] .ds-rail-num { color: var(--color-gold-700, #a16207); } .ds-rail-link[data-state=\"active\"] .ds-rail-dot { background: var(--color-gold, #eab308); box-shadow: inset 0 0 0 2px var(--color-gold, #eab308), 0 0 0 3px #ffffff, 0 0 0 4.5px var(--color-gold, #eab308); transform: scale(1.1); } @media (prefers-reduced-motion: reduce) { .ds-rail-fill { transition: none; } }"
+    },
+    {
+      "name": "Ruled Pôle Rows",
+      "kind": "custom",
+      "refersTo": "ruled-row",
+      "description": "Signature layout primitive: hairline-ruled rows instead of cards. The whole row is the link hit area; a Paper Grey fill bleeds into the gutter and the arrow disc fills navy (white arrow) and slides on hover.",
+      "html": "<div class=\"ds-rows-canvas\"><ul class=\"ds-poles\"><li class=\"ds-pole\"><div class=\"ds-pole-row\"><div><h4 class=\"ds-pole-title\"><a class=\"ds-pole-link\" href=\"/poles/juridique/\">Juridique, Social &amp; Paie</a></h4><p class=\"ds-pole-desc\">Constitution d'entreprise, vie sociale, paie et obligations sociales.</p><p class=\"ds-pole-meta\"><span>4 offres</span><span class=\"ds-pole-free\"><span class=\"ds-pole-tag\">Gratuit</span>Check-up conformité sociale</span></p></div><span class=\"ds-pole-arrow\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></span></div></li><li class=\"ds-pole\"><div class=\"ds-pole-row\"><div><h4 class=\"ds-pole-title\"><a class=\"ds-pole-link\" href=\"/poles/audit/\">Audit &amp; Immobilisations</a></h4><p class=\"ds-pole-desc\">Audit, inventaire et gestion de votre patrimoine immobilisé.</p><p class=\"ds-pole-meta\"><span>6 offres</span></p></div><span class=\"ds-pole-arrow\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></span></div></li></ul></div>",
+      "css": ".ds-rows-canvas { padding: 8px 28px; background: #ffffff; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-poles { margin: 0; padding: 0; list-style: none; border-top: 1px solid rgb(10 25 47 / 0.12); } .ds-pole { position: relative; border-bottom: 1px solid rgb(10 25 47 / 0.12); } .ds-pole::before { content: \"\"; position: absolute; inset: 0 -20px; border-radius: 14px; background: var(--color-gray-light, #f3f4f6); opacity: 0; transition: opacity 220ms ease; } .ds-pole-row { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 24px; padding: 36px 0; } .ds-pole-title { margin: 0; font-size: 28px; font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-navy, #0a192f); } .ds-pole-link { color: inherit; text-decoration: none; } .ds-pole-link::after { content: \"\"; position: absolute; inset: 0; } .ds-pole-link:focus-visible { outline: 2px solid var(--color-navy, #0a192f); outline-offset: 3px; } .ds-pole-desc { margin: 8px 0 0; max-width: 36rem; font-size: 16px; line-height: 1.625; color: rgb(10 25 47 / 0.7); } .ds-pole-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 16px 0 0; font-size: 14px; color: rgb(10 25 47 / 0.75); font-variant-numeric: tabular-nums lining-nums; } .ds-pole-free { display: inline-flex; align-items: center; gap: 8px; } .ds-pole-tag { padding: 1px 8px; border: 1px solid rgb(10 25 47 / 0.3); border-radius: 9999px; font-size: 12px; font-weight: 600; line-height: 1.33; color: var(--color-navy, #0a192f); } .ds-pole-arrow { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 9999px; box-shadow: inset 0 0 0 1px rgb(10 25 47 / 0.18); color: var(--color-navy, #0a192f); transition: background-color 220ms ease, box-shadow 220ms ease, color 220ms ease, transform 360ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-pole:hover::before, .ds-pole:focus-within::before { opacity: 1; } .ds-pole:hover .ds-pole-arrow { transform: translateX(4px); background: var(--color-navy, #0a192f); box-shadow: inset 0 0 0 1px var(--color-navy, #0a192f); color: #ffffff; }"
+    },
+    {
+      "name": "Double Rule",
+      "kind": "custom",
+      "refersTo": "double-rule",
+      "description": "Signature: the accounting double rule under one key word per surface. It draws left to right, the second stroke 140ms later; gold on navy, navy on the gold band.",
+      "html": "<div class=\"ds-rule-canvas\"><h1 class=\"ds-rule-headline\">Votre partenaire pour garantir l'existence, la conformité et la <span class=\"ds-double-rule\">performance</span> de votre entreprise.</h1></div>",
+      "css": ".ds-rule-canvas { padding: 40px 32px; background: var(--color-navy, #0a192f); color: #ffffff; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-rule-headline { margin: 0; max-width: 15em; font-size: clamp(2.3rem, 1.35rem + 3.3vw, 4.05rem); font-weight: 800; line-height: 1.04; letter-spacing: -0.032em; text-wrap: balance; } .ds-double-rule { position: relative; display: inline-block; color: var(--color-gold, #eab308); } .ds-double-rule::before, .ds-double-rule::after { content: \"\"; position: absolute; left: 0.02em; right: 0.02em; height: max(2px, 0.055em); background: var(--color-gold, #eab308); transform-origin: left center; animation: ds-rule-draw 700ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both; } .ds-double-rule::before { bottom: -0.06em; } .ds-double-rule::after { bottom: -0.2em; animation-delay: 140ms; } @keyframes ds-rule-draw { from { transform: scaleX(0); } } @media (prefers-reduced-motion: reduce) { .ds-double-rule::before, .ds-double-rule::after { animation: none; } }"
+    },
+    {
+      "name": "Reçu Stamp",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "Signature: the dated confirmation stamp that replaces the form after a successful send. Stamp Ochre, 3px double border, tilted −8°, lands in 520ms.",
+      "html": "<div class=\"ds-stamp-canvas\"><div class=\"ds-stamp\" aria-hidden=\"true\"><span class=\"ds-stamp-title\">Reçu</span><span class=\"ds-stamp-date\">27 SEPT. 2026</span><span class=\"ds-stamp-by\">ORLI Consulting</span></div><p class=\"ds-stamp-msg\">Merci, votre demande est bien arrivée.</p><p class=\"ds-stamp-note\">Un consultant vous répond sous 48 h.</p></div>",
+      "css": ".ds-stamp-canvas { padding: 32px 28px; background: #ffffff; text-align: center; font-family: var(--font-sans, \"Schibsted Grotesk\", ui-sans-serif, system-ui, sans-serif); } .ds-stamp { display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem; padding: 0.85rem 1.6rem 0.95rem; border: 3px double var(--color-gold-700, #a16207); border-radius: 10px; color: var(--color-gold-700, #a16207); box-shadow: inset 0 0 0 1px rgb(161 98 7 / 0.25); transform: rotate(-8deg); animation: ds-stamp-in 520ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both; } .ds-stamp-title { font-size: 2rem; font-weight: 900; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; } .ds-stamp-date { font-family: var(--font-mono, \"Fragment Mono\", ui-monospace, SFMono-Regular, monospace); font-size: 0.8rem; letter-spacing: 0.12em; } .ds-stamp-by { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; opacity: 0.8; } .ds-stamp-msg { margin: 32px 0 0; font-size: 20px; font-weight: 700; line-height: 1.4; letter-spacing: -0.02em; color: var(--color-navy, #0a192f); } .ds-stamp-note { margin: 8px auto 0; max-width: 24rem; font-size: 15px; line-height: 1.625; color: rgb(10 25 47 / 0.7); } @keyframes ds-stamp-in { 0% { opacity: 0; transform: scale(1.9) rotate(-18deg); filter: blur(6px); } 60% { opacity: 1; filter: blur(0); } 100% { opacity: 1; transform: scale(1) rotate(-8deg); filter: blur(0); } } @media (prefers-reduced-motion: reduce) { .ds-stamp { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ledger That Moves Forward",
+    "overview": "The site reads like a well-kept ledger that someone walks you through. Navy is the binding and the ink, white and paper grey are the pages, hairline rules hold the rows, and a single gold thread, the journey rail, advances with the reader from first contact to long-term follow-up. The identity comes from the accounting trade's own marks: the double rule that closes a verified total, the dated \"Reçu\" stamp, reference figures set in a monospaced face. Every gold mark means \"you are here\" or \"this is the next step\"; nothing else is gold.\n\nThe voice is confident, precise and unhurried. Headings are Schibsted Grotesk set heavy and tight; reading text is plain and generous; Fragment Mono is held back for the figures a finance reader checks: step numbers, durations, dates, references. Density is moderate. Long hairline-ruled rows replace card grids, sections breathe on an 80–128px rhythm, and one 12-column grid carries every page. Surfaces change by chapter, not by decoration. Navy carries the brand chapters (header, heroes, the needs router, footer), white carries the reading, paper grey holds FAQs and recaps, and a gold band closes each page with its one call to action.\n\nMotion is authored once per surface: the page-hero entrance, the rail filling as you read, the double rule drawing under a key word, the stamp landing when the form is sent. Everything else is interaction feedback on one house curve (ease-out-expo). The system rejects the stock accounting-firm showcase (hero, three service cards, key-figure counters, testimonials) and rejects eyebrow labels over headings.",
+    "keyCharacteristics": [
+      "A pinned client palette: the navy family, one gold, one paper grey. New tones are only alphas of navy or white.",
+      "Gold is spent only on forward motion: the rail, the current step, the double rule, the primary action, the active page, the stamp, the logo.",
+      "Hairline-ruled rows instead of cards; containers appear only when they do work.",
+      "Schibsted Grotesk 400–900 for all text; Fragment Mono only for measured figures.",
+      "The five-step journey rail organizes the home page and every pôle page.",
+      "French typography is handled in code: non-breaking spaces and pronoun hyphens.",
+      "One authored motion moment per surface; everything respects reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The One Moment Rule",
+        "body": "Each surface gets at most one authored motion moment: the page-hero entrance, the journey rail, the double rule, or the \"Reçu\" stamp. Everything else is interaction state (hover, press, open, select, copy), and there are no scroll-reveal staggers. Page-to-page view transitions (160ms out, 360ms in) are navigation, not a moment. Under reduced motion, entrances, view transitions and the stamp animation are off, and the double rule appears without drawing. Content stays visible without JavaScript.",
+        "section": "overview"
+      },
+      {
+        "name": "The Forward Gold Rule",
+        "body": "Gold (#eab308) is reserved for what moves the visitor forward: the journey rail and current step, the accounting double rule, primary calls to action, the active page or selection, the \"Reçu\" stamp, and the logo. Icons, tags (including \"Gratuit\"), metadata and link underlines are navy or white. If a gold mark does not advance, confirm, or say \"you are here\", it is not gold.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gold-on-Navy Rule",
+        "body": "The gold button lives only on navy surfaces; on white, grey or gold, the primary action is the navy button. On the gold band the double rule turns navy.",
+        "section": "colors"
+      },
+      {
+        "name": "The Small-Gold Rule",
+        "body": "On light surfaces, gold text and thin gold marks use Stamp Ochre (#a16207, 4.9:1). Forward Gold appears on white only as fills and rules: the rail fill, rail dots, step markers, the table-of-contents segment.",
+        "section": "colors"
+      },
+      {
+        "name": "The Measured-Figure Rule",
+        "body": "Fragment Mono is only for journey step numbers, durations, dates, reference codes and the single hero fact line. Never for labels, tags, headings, buttons or navigation.",
+        "section": "typography"
+      },
+      {
+        "name": "The Named-Pôle Rule",
+        "body": "Pôles are named in full words (\"Comptabilité\", \"Juridique, Social & Paie\", \"Audit & Immobilisations\"); the only pôle numbering is the client's \"Pôle 01–03\" label on the home cards. Offers are never numbered and keep the client's exact wording (\"Pack Démarrage — régime fiscal, immatriculation, plan SYSCOHADA\").",
+        "section": "typography"
+      },
+      {
+        "name": "The Client-Text Rule",
+        "body": "The client's approved mockup is the source of truth for all visible copy on the home page, header and footer: section eyebrows (\"Nos pôles\", \"Notre méthode\", \"Le blog\", \"Ils nous font confiance\", the hero's \"Cabinet de conseil en comptabilité · Abidjan\"), \"Pôle 01–03\" card labels and \"Étape 1–5\" are set exactly as written, as eyebrows in Fragment Mono 12px, 0.2em tracking, uppercase, Stamp Ochre on light and Forward Gold on navy. Never reword, shorten or add copy to these surfaces.",
+        "section": "typography"
+      },
+      {
+        "name": "The French Spacing Rule",
+        "body": "Visible French text gets a non-breaking space (U+00A0) before ; : ! ? » and after «, and a non-breaking hyphen (U+2011) before a trailing pronoun, in inversions (\"sommes‑nous\") and pronoun imperatives (\"Écrivez‑nous\"). Content strings pass through `typo()` / `fr()` in src/lib/typo.ts instead of being hand-spaced.",
+        "section": "typography"
+      },
+      {
+        "name": "The Single Container Rule",
+        "body": "Every section's content sits in the one 1240px container on the 12-column grid. Only surfaces run full-bleed (bands, heroes, header, footer and its wordmark), and the only thing that crosses into the gutter is a ruled row's hover fill, never beyond the screen edge.",
+        "section": "layout"
+      },
+      {
+        "name": "The Lift-Over-Navy Rule",
+        "body": "Beyond the two filled buttons' small lift, a shadow means one of two things: this white object sits above a navy chapter (form cards, the dropdown), or the header has detached. Light-on-light surfaces never cast shadows.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Ruled-Row Rule",
+        "body": "Lists of offers, pôles, contacts, questions and links are hairline-ruled rows, not cards: Ledger Rule on light, Night Rule on navy, 20px vertical padding, text flush with the rule. A container is allowed only when it does work: a form, a tab widget with its own navy ground, an overlay, a media card, an empty-state drop zone.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Two-Radius Rule",
+        "body": "Use 8px for things you press or type into and 16px for things that hold them. Everything round is a full pill or circle.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Focus Follows the Surface Rule",
+        "body": "Every focusable element gets a 2px outline at a 3px offset in its surface's focus color: navy on white, grey and gold surfaces, gold on navy and Chapter Navy. The color is inherited from the nearest surface, so any new surface declares its own (the white dropdown declares navy inside the navy header).",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do reserve Forward Gold (#eab308) for the journey rail and current step, the double rule, primary calls to action, the active page or selection, the \"Reçu\" stamp and the logo.",
+      "Do put the gold button on navy only, and use the navy button as the primary action on white, grey and gold.",
+      "Do use Stamp Ochre (#a16207) for any gold text or thin gold mark on a light surface.",
+      "Do build lists as hairline-ruled rows (navy 12% on light, white 12% on navy) with 20px vertical padding, and give every card a functional reason.",
+      "Do name pôles in full words: \"Comptabilité\", \"Juridique, Social & Paie\", \"Audit & Immobilisations\".",
+      "Do keep Fragment Mono for step numbers, durations, dates, reference codes and the hero fact line, and set phone numbers and counts in tabular lining figures.",
+      "Do give each surface one authored motion moment on ease-out-expo, keep every animation optional under prefers-reduced-motion, and keep content visible without JavaScript.",
+      "Do let focus follow the surface: a 2px outline at a 3px offset, navy on light and gold on navy, with every new surface declaring its focus color.",
+      "Do route French strings through `typo()` / `fr()` so ; : ! ? » get non-breaking spaces and trailing-pronoun hyphens never break.",
+      "Do keep one primary action per surface (the free diagnostic), with the phone call as the alternative."
+    ],
+    "donts": [
+      "Don't use gold for icons, tags, metadata, missing-data markers or link underlines.",
+      "Don't put a gold button, or gold text in #eab308, on a white or grey surface.",
+      "Don't number pôles or offers (no \"Pôle 01\"); numerals as numbering belong to the five journey steps only.",
+      "Don't add eyebrow or kicker labels above headings.",
+      "Don't set labels, tags, buttons, navigation or headings in Fragment Mono.",
+      "Don't build the stock accounting-firm showcase of hero, three service cards, key-figure counters and testimonials.",
+      "Don't wrap a list in a card unless the container does work (a form, a tab panel, an overlay, media), and don't cast shadows on light-on-light surfaces.",
+      "Don't add scroll-reveal staggers or a second authored animation to a surface.",
+      "Don't introduce new hues. Beyond the pinned palette (navy #0a192f / #112240 / #1b3157, gold #eab308 / #ca9a04, grey #f3f4f6), the system allows only Stamp Ochre, Lit Gold and Correction Red, plus alphas of navy and white.",
+      "Don't design around the placeholder partner logos in public/logos/; they are provisional client assets."
+    ]
+  }
+}

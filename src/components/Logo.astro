@@ -1,0 +1,48 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<a href="/" class={`logo group inline-flex items-baseline gap-2 ${className}`} aria-label="ORLI Consulting — accueil">
+  <span class="logo-mark relative text-[22px] leading-none font-black tracking-[-0.03em] text-white">ORLI</span>
+  <span class="text-[11px] font-semibold tracking-[0.22em] text-gold uppercase">Consulting</span>
+</a>
+
+<style>
+  /* Au survol, le double trait comptable se trace sous « ORLI ». */
+  .logo-mark::before,
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 420ms var(--ease-out-expo);
+  }
+
+  .logo-mark::before {
+    bottom: -5px;
+  }
+
+  .logo-mark::after {
+    bottom: -9px;
+    transition-delay: 70ms;
+  }
+
+  @media (hover: hover) {
+    .logo:hover .logo-mark::before,
+    .logo:hover .logo-mark::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .logo:focus-visible .logo-mark::before,
+  .logo:focus-visible .logo-mark::after {
+    transform: scaleX(1);
+  }
+</style>

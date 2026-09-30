@@ -1,0 +1,202 @@
+---
+import Icon from '@/components/Icon.astro';
+import { findOffer, getPole, needs } from '@/lib/content';
+
+interface Props {
+  /** Cible du bouton : le formulaire de la page (#diagnostic) ou la page Contact. */
+  formHref?: string;
+  headingLevel?: 'h3' | 'h4';
+  id?: string;
+}
+
+const { formHref = '#diagnostic', headingLevel: Heading = 'h4', id = 'besoins' } = Astro.props;
+const samePage = formHref.startsWith('#');
+---
+
+<div id={id} data-router class="router rounded-2xl bg-navy p-5 text-white sm:p-8 lg:p-10">
+  <Heading class="text-xl font-bold tracking-[-0.02em] sm:text-2xl">Où en est votre entreprise&nbsp;?</Heading>
+  <p class="mt-2 text-[15px] text-white/70">Choisissez votre situation&nbsp;: voici les offres qui y répondent.</p>
+
+  <div role="tablist" aria-label="Votre situation" class="mt-6 flex flex-wrap gap-2">
+    {
+      needs.map((need, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${id}-tab-${need.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls={`${id}-panel-${need.id}`}
+          tabindex={i === 0 ? 0 : -1}
+          class="chip"
+        >
+          {need.label}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    needs.map((need, i) => {
+      const firstPole = need.offers[0].pole;
+      return (
+        <div
+          role="tabpanel"
+          id={`${id}-panel-${need.id}`}
+          aria-labelledby={`${id}-tab-${need.id}`}
+          tabindex="0"
+          hidden={i !== 0}
+          class="router-panel mt-8"
+        >
+          <ul class="divide-y divide-white/10 border-y border-white/10">
+            {need.offers.map((ref) => {
+              const pole = getPole(ref.pole);
+              const offer = findOffer(ref.pole, ref.title);
+              return (
+                <li class="grid gap-2 py-4 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6">
+                  <div>
+                    <p class="flex flex-wrap items-center gap-2 text-[17px] font-semibold">
+                      {offer.title}
+                    </p>
+                  </div>
+                  <a href={pole.href} class="group inline-flex items-center gap-2 text-sm text-white/75 hover:text-white">
+                    <span class="link-draw">{pole.title}</span>
+                    <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <a
+            href={samePage ? formHref : `${formHref.split('#')[0]}?pole=${firstPole}#diagnostic`}
+            data-pole={samePage ? getPole(firstPole).title : undefined}
+            class="btn btn-gold mt-7"
+          >
+            <span class="sm:hidden">Demander ce diagnostic</span>
+            <span class="hidden sm:inline">Demander un diagnostic pour ce besoin</span>
+            <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+          </a>
+        </div>
+      );
+    })
+  }
+</div>
+
+<script>
+  import { announce } from '@/scripts/announce';
+
+  document.querySelectorAll<HTMLElement>('[data-router]').forEach((router) => {
+    const tabs = Array.from(router.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls') ?? ''));
+
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => {
+        const selected = i === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        const panel = panels[i];
+        if (!panel) return;
+        if (selected && panel.hidden) {
+          panel.hidden = false;
+          panel.classList.remove('is-entering');
+          void panel.offsetWidth;
+          panel.classList.add('is-entering');
+        } else if (!selected) {
+          panel.hidden = true;
+        }
+      });
+      if (focus) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (event) => {
+        const keys: Record<string, number> = {
+          ArrowRight: (i + 1) % tabs.length,
+          ArrowDown: (i + 1) % tabs.length,
+          ArrowLeft: (i - 1 + tabs.length) % tabs.length,
+          ArrowUp: (i - 1 + tabs.length) % tabs.length,
+          Home: 0,
+          End: tabs.length - 1,
+        };
+        if (event.key in keys) {
+          event.preventDefault();
+          select(keys[event.key], true);
+        }
+      });
+    });
+
+    // Bouton « Demander un diagnostic » : présélectionne le pôle dans le formulaire de la page.
+    router.addEventListener('click', (event) => {
+      const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[data-pole]');
+      if (!link) return;
+      const target = document.querySelector<HTMLSelectElement>(`${link.hash} select[name="pole"]`);
+      if (target) {
+        target.value = link.dataset.pole ?? '';
+        target.dispatchEvent(new Event('change', { bubbles: true }));
+        announce(`Pôle présélectionné : ${link.dataset.pole}`);
+      }
+    });
+  });
+</script>
+
+<style>
+  .chip {
+    min-height: 2.5rem;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    font-size: 14.5px;
+    font-weight: 500;
+    color: rgb(255 255 255 / 0.85);
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      transform 120ms var(--ease-out-expo);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .chip:hover {
+    border-color: rgb(255 255 255 / 0.55);
+    color: #fff;
+  }
+
+  .chip:active {
+    transform: scale(0.97);
+  }
+
+  .chip[aria-selected='true'] {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-navy);
+    font-weight: 600;
+  }
+
+  .router-panel:focus-visible {
+    outline-offset: 6px;
+    border-radius: 8px;
+  }
+
+  .router-panel.is-entering {
+    animation: panel-in 380ms var(--ease-out-expo) both;
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .router-panel.is-entering {
+      animation-name: panel-fade;
+    }
+
+    @keyframes panel-fade {
+      from {
+        opacity: 0;
+      }
+    }
+  }
+</style>

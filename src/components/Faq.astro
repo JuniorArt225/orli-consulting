@@ -1,0 +1,111 @@
+---
+import Icon from '@/components/Icon.astro';
+
+interface Props {
+  items: readonly { q: string; a: string }[];
+  /** Nom du groupe : une seule réponse ouverte à la fois (accordéon natif). */
+  name?: string;
+  headingLevel?: 'h3' | 'h4';
+}
+
+const { items, name = 'faq', headingLevel: Heading = 'h3' } = Astro.props;
+
+// Données structurées FAQ : uniquement les questions/réponses affichées.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+
+<div class="border-t border-navy/12">
+  {
+    items.map((item) => (
+      <details name={name} class="faq-item border-b border-navy/12">
+        <summary class="faq-summary">
+          <Heading class="text-[17px] leading-snug font-semibold text-navy [text-wrap:pretty] sm:text-lg">{item.q}</Heading>
+          <span class="faq-icon" aria-hidden="true">
+            <Icon name="plus" class="h-4 w-4" />
+          </span>
+        </summary>
+        <p class="max-w-3xl pr-12 pb-6 text-[16px] leading-relaxed text-navy/75">{item.a}</p>
+      </details>
+    ))
+  }
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style>
+  .faq-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    border-radius: 6px;
+  }
+
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgb(10 25 47 / 0.18);
+    color: var(--color-navy);
+    transition:
+      transform 360ms var(--ease-out-expo),
+      background-color 200ms ease,
+      box-shadow 200ms ease,
+      color 200ms ease;
+  }
+
+  .faq-summary:hover .faq-icon {
+    box-shadow: inset 0 0 0 1px var(--color-navy);
+  }
+
+  /* « + » qui pivote en « × » à l'ouverture. */
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+    background: var(--color-navy);
+    box-shadow: inset 0 0 0 1px var(--color-navy);
+    color: #fff;
+  }
+
+  /* Ouverture fluide là où le navigateur sait animer vers `auto`. */
+  @supports (interpolate-size: allow-keywords) {
+    .faq-item {
+      interpolate-size: allow-keywords;
+    }
+
+    .faq-item::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 380ms var(--ease-out-expo),
+        content-visibility 380ms allow-discrete;
+    }
+
+    .faq-item[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item::details-content {
+      transition: none;
+    }
+  }
+</style>

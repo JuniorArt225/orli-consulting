@@ -1,0 +1,387 @@
+---
+import Logo from '@/components/Logo.astro';
+import Icon from '@/components/Icon.astro';
+import { company, nav, poles } from '@/lib/content';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href.includes('#')) return false;
+  return href === '/' ? path === '/' : path.startsWith(href);
+};
+
+// Sur l'accueil, le formulaire est dans le hero ; ailleurs, il vit sur /contact/.
+const ctaHref = path === '/' ? '#diagnostic' : '/contact/#diagnostic';
+const mainPhone = company.phones[0];
+---
+
+<header
+  data-header
+  data-hidden="false"
+  data-scrolled="false"
+  class="site-header sticky top-0 z-50 border-b border-white/10 bg-navy text-white"
+>
+  <div class="container-orli flex h-16 items-center justify-between gap-6 lg:h-[72px]">
+    <Logo />
+
+    <nav aria-label="Navigation principale" class="hidden xl:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) =>
+            item.children ? (
+              <li data-dropdown class="relative">
+                <button
+                  type="button"
+                  data-dropdown-toggle
+                  aria-expanded="false"
+                  aria-controls="menu-poles"
+                  class:list={['nav-link', { 'is-active': path.startsWith('/poles/') }]}
+                >
+                  {item.label}
+                  <Icon name="chevron-down" class="chevron h-4 w-4" />
+                </button>
+
+                <div id="menu-poles" data-open="false" class="dropdown-panel">
+                  <ul class="grid grid-cols-3 gap-2">
+                    {item.children.map((pole) => (
+                      <li>
+                        <a href={pole.href} class="dropdown-item group">
+                          <span class="block text-[15px] leading-snug font-semibold text-navy">{pole.title}</span>
+                          <span class="mt-1.5 block text-[13px] leading-relaxed text-navy/70">{pole.description}</span>
+                          <span class="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-navy">
+                            {pole.offers.length} offres
+                            <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <div class="mx-4 mt-1 flex items-center justify-between gap-4 border-t border-navy/10 pt-3.5 pb-2.5 text-[13px]">
+                    <span class="text-navy/70">Vous ne savez pas par où commencer&nbsp;?</span>
+                    <a href="/poles/#par-ou-commencer" class="link-draw font-semibold text-navy">
+                      Trouver le bon pôle
+                    </a>
+                  </div>
+                </div>
+              </li>
+            ) : (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  class:list={['nav-link', { 'is-active': isActive(item.href) }]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href={ctaHref} class="btn btn-gold hidden min-h-11 px-4 text-sm md:inline-flex">
+        Diagnostic gratuit
+        <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+      </a>
+
+      <a
+        href={mainPhone.href}
+        class="icon-button inline-grid xl:hidden"
+        aria-label={`Appeler ORLI Consulting au ${mainPhone.display}`}
+      >
+        <Icon name="phone" class="h-5 w-5" />
+      </a>
+
+      <button
+        type="button"
+        data-menu-toggle
+        aria-controls="menu-mobile"
+        aria-expanded="false"
+        class="icon-button burger inline-grid xl:hidden"
+      >
+        <span data-menu-label class="sr-only">Ouvrir le menu</span>
+        <span class="burger-line" aria-hidden="true"></span>
+        <span class="burger-line" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Hors de l'en-tête : un parent transformé casserait le positionnement fixe. -->
+<div id="menu-mobile" data-open="false" class="mobile-panel fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-navy text-white xl:hidden">
+  <nav aria-label="Navigation mobile" class="container-orli flex min-h-full flex-col pt-2 pb-8">
+    <ul class="divide-y divide-white/10 border-b border-white/10">
+      {
+        nav.map((item, i) =>
+          item.children ? (
+            <li style={`--i: ${i + 1}`}>
+              <a href={item.href} class="mobile-link" aria-current={path === item.href ? 'page' : undefined}>
+                {item.label} <Icon name="arrow-right" class="h-5 w-5 text-white/40" />
+              </a>
+              <ul class="-mt-1 grid gap-1 pb-4">
+                {poles.map((pole) => (
+                  <li>
+                    <a
+                      href={pole.href}
+                      class="block rounded-md py-1.5 text-[15px] text-white/75 hover:text-white"
+                      aria-current={path === pole.href ? 'page' : undefined}
+                    >
+                      {pole.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li style={`--i: ${i + 1}`}>
+              <a href={item.href} class="mobile-link" aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label} <Icon name="arrow-right" class="h-5 w-5 text-white/40" />
+              </a>
+            </li>
+          ),
+        )
+      }
+    </ul>
+
+    <div class="mt-auto grid gap-3 pt-10" style="--i: 7">
+      <a href={ctaHref} class="btn btn-gold w-full">
+        Diagnostic gratuit
+        <Icon name="arrow-right" class="h-4 w-4" data-icon="arrow" />
+      </a>
+      <a href={mainPhone.href} class="btn btn-line-light w-full">
+        <Icon name="phone" class="h-4 w-4" />
+        {mainPhone.display}
+      </a>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .site-header {
+    view-transition-name: site-header;
+    transition:
+      transform 420ms var(--ease-out-expo),
+      box-shadow 240ms ease;
+  }
+
+  .site-header[data-scrolled='true'] {
+    box-shadow: 0 14px 30px -18px rgb(3 10 22 / 0.85);
+  }
+
+  .site-header[data-hidden='true'] {
+    transform: translateY(-100%);
+  }
+
+  /* Liens de navigation : trait qui se déploie au survol (blanc), or pour la page en cours. */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: rgb(255 255 255 / 0.78);
+    transition: color 160ms ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0.8rem;
+    right: 0.8rem;
+    bottom: 0.3rem;
+    height: 2px;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transition: transform 320ms var(--ease-out-expo);
+  }
+
+  .nav-link:hover,
+  .nav-link.is-active,
+  .nav-link[aria-expanded='true'] {
+    color: #fff;
+  }
+
+  .nav-link:hover::after {
+    background: rgb(255 255 255 / 0.45);
+    transform: scaleX(1);
+  }
+
+  .nav-link.is-active::after {
+    background: var(--color-gold);
+    transform: scaleX(1);
+  }
+
+  .nav-link .chevron {
+    transition: transform 260ms var(--ease-out-expo);
+  }
+
+  .nav-link[aria-expanded='true'] .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Menu déroulant des pôles */
+  .dropdown-panel {
+    --focus: var(--color-navy);
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    width: min(760px, calc(100vw - 4rem));
+    padding: 0.5rem;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow:
+      0 30px 60px -24px rgb(3 10 22 / 0.55),
+      0 2px 6px rgb(3 10 22 / 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -6px) scale(0.985);
+    transform-origin: top center;
+    transition:
+      opacity 160ms ease,
+      transform 220ms var(--ease-out-expo),
+      visibility 0s linear 220ms;
+  }
+
+  /* Pont invisible entre le bouton et le panneau : la souris ne « tombe » pas dans le vide. */
+  .dropdown-panel::before {
+    content: '';
+    position: absolute;
+    inset: -16px 0 auto;
+    height: 16px;
+  }
+
+  .dropdown-panel[data-open='true'] {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0) scale(1);
+    transition:
+      opacity 180ms ease,
+      transform 320ms var(--ease-out-expo),
+      visibility 0s;
+  }
+
+  .dropdown-item {
+    display: block;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: background-color 160ms ease;
+  }
+
+  .dropdown-item:hover,
+  .dropdown-item:focus-visible {
+    background: var(--color-gray-light);
+  }
+
+  /* Boutons ronds de l'en-tête mobile */
+  .icon-button {
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.6rem;
+    color: #fff;
+    transition: background-color 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .icon-button:hover {
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  .burger {
+    position: relative;
+  }
+
+  .burger-line {
+    position: absolute;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    margin-left: -10px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform 320ms var(--ease-out-expo),
+      top 320ms var(--ease-out-expo);
+  }
+
+  .burger-line:nth-of-type(2) {
+    top: calc(50% - 4px);
+  }
+
+  .burger-line:nth-of-type(3) {
+    top: calc(50% + 3px);
+  }
+
+  .burger[aria-expanded='true'] .burger-line:nth-of-type(2) {
+    top: calc(50% - 1px);
+    transform: rotate(45deg);
+  }
+
+  .burger[aria-expanded='true'] .burger-line:nth-of-type(3) {
+    top: calc(50% - 1px);
+    transform: rotate(-45deg);
+  }
+
+  /* Menu mobile plein écran */
+  .mobile-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition:
+      opacity 180ms ease,
+      transform 260ms var(--ease-out-expo),
+      visibility 0s linear 260ms;
+  }
+
+  .mobile-panel[data-open='true'] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 220ms ease,
+      transform 420ms var(--ease-out-expo),
+      visibility 0s;
+  }
+
+  .mobile-panel[data-open='true'] :is(ul > li, .mt-auto) {
+    animation: menu-in 480ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 40ms + 60ms);
+  }
+
+  .mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.05rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    transition: color 160ms ease;
+  }
+
+  .mobile-link[aria-current='page'] {
+    color: var(--color-gold);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  :global(html[data-menu='open']) {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-panel[data-open='true'] :is(ul > li, .mt-auto) {
+      animation: none;
+    }
+  }
+</style>

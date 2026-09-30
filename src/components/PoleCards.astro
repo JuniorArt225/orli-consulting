@@ -1,0 +1,86 @@
+---
+/** Les trois cartes de la section « Nos pôles » (maquette validée par le client). */
+import Icon from '@/components/Icon.astro';
+import { poles } from '@/lib/content';
+
+const dots = { blue: 'bg-[#dde6f7]', gold: 'bg-[#f8e6bf]', green: 'bg-[#dcecde]' } as const;
+---
+
+<ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+  {
+    poles.map((pole) => (
+      <li class="pole-card group relative flex flex-col rounded-2xl border border-navy/10 bg-white p-6 sm:p-7">
+        <div class="flex items-center justify-between">
+          <p class="font-mono text-[12px] tracking-[0.18em] text-navy/55 uppercase">Pôle {pole.number}</p>
+          <span class:list={['pole-dot h-7 w-7 rounded-full', dots[pole.dot]]} aria-hidden="true" />
+        </div>
+
+        <h3 class="mt-5 text-[22px] leading-snug font-bold tracking-[-0.02em] text-navy">{pole.title}</h3>
+        <p class="mt-2 text-[15px] leading-relaxed text-navy/70">{pole.description}</p>
+
+        <ul class="mt-6 space-y-2.5 border-t border-navy/10 pt-6 text-[15px] text-navy/85">
+          {pole.offers.map((offer) => (
+            <li class="flex gap-3">
+              <span class="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
+              {offer.title}
+            </li>
+          ))}
+        </ul>
+
+        <a href={pole.href} class="card-link mt-auto inline-flex items-center gap-1.5 pt-8 text-[15px] font-semibold text-navy">
+          Découvrir le pôle
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          <span class="sr-only">{pole.title}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .pole-card {
+    transition:
+      border-color 220ms ease,
+      box-shadow 260ms ease,
+      transform 360ms var(--ease-out-expo);
+  }
+
+  /* Toute la carte est cliquable ; seul le lien reçoit le focus. */
+  .card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .pole-dot {
+    transition: transform 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) {
+    .pole-card:hover {
+      border-color: rgb(10 25 47 / 0.25);
+      box-shadow: 0 24px 48px -32px rgb(10 25 47 / 0.35);
+      transform: translateY(-3px);
+    }
+
+    .pole-card:hover .pole-dot {
+      transform: scale(1.18);
+    }
+  }
+
+  .pole-card:focus-within {
+    border-color: rgb(10 25 47 / 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pole-card,
+    .pole-dot {
+      transition: none;
+    }
+
+    .pole-card:hover {
+      transform: none;
+    }
+  }
+</style>

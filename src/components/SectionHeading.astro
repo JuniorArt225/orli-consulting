@@ -1,0 +1,36 @@
+---
+import Icon from '@/components/Icon.astro';
+import { fr } from '@/lib/typo';
+
+interface Props {
+  /** Sur-titre de la maquette (« Nos pôles », « Notre méthode »…). */
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  /** Lien secondaire aligné à droite sur desktop (« Tous les articles »). */
+  linkLabel?: string;
+  linkHref?: string;
+  as?: 'h2' | 'h3';
+  id?: string;
+  class?: string;
+}
+
+const { eyebrow, title, description, linkLabel, linkHref, as: Heading = 'h2', id, class: className = '' } = Astro.props;
+---
+
+<div class={`md:flex md:items-end md:justify-between md:gap-10 ${className}`}>
+  <div class="max-w-3xl">
+    {eyebrow && <p class="eyebrow mb-5">{eyebrow}</p>}
+    <Heading id={id} class="text-title font-extrabold text-navy">{fr(title)}</Heading>
+    {description && <p class="mt-4 max-w-2xl text-[17px] leading-relaxed text-navy/75 sm:text-lg">{fr(description)}</p>}
+  </div>
+
+  {
+    linkLabel && linkHref && (
+      <a href={linkHref} class="group mt-6 inline-flex shrink-0 items-center gap-2 text-[15px] font-semibold text-navy md:mt-0">
+        <span class="link-draw">{linkLabel}</span>
+        <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+      </a>
+    )
+  }
+</div>

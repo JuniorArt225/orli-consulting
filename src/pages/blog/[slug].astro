@@ -1,0 +1,111 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { PortableText } from 'astro-portabletext';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import CtaBanner from '@/components/CtaBanner.astro';
+import Icon from '@/components/Icon.astro';
+import { getAllPosts, getPostBySlug, formatDate, urlForImage } from '@/lib/sanity';
+import type { Post } from '@/types/sanity';
+
+// Une page HTML par article, générée au build — rien à exécuter côté serveur.
+export const getStaticPaths = (async () => {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const post = (await getPostBySlug(slug!)) as Post | null;
+
+if (!post) {
+  return Astro.redirect('/blog/');
+}
+
+const cover = urlForImage(post.mainImage, 1200, 675);
+---
+
+<BaseLayout title={`${post.title} — ORLI Consulting`} description={post.seoDescription ?? post.excerpt}>
+  <!-- Progression de lecture : un filet or en haut de l'écran. -->
+  <div class="reading-progress" aria-hidden="true" data-reading-progress></div>
+
+  <article>
+    <header class="bg-navy text-white">
+      <div class="container-orli max-w-4xl pt-8 pb-16 sm:pt-10 lg:pb-20">
+        <Breadcrumbs items={[{ label: 'Blog', href: '/blog/' }, { label: post.title }]} />
+
+        <h1 class="enter-title mt-10 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)] leading-[1.06] font-extrabold tracking-[-0.03em] lg:mt-14">
+          {post.title}
+        </h1>
+        <p class="enter-fade mt-6 max-w-2xl text-lg leading-relaxed text-white/75" style="--d: 180ms">{post.excerpt}</p>
+
+        <p class="enter-fade mt-8 flex flex-wrap items-center gap-x-2.5 gap-y-1 border-t border-white/12 pt-5 text-[13px] text-white/70" style="--d: 260ms">
+          <span class="font-semibold text-white">{post.category?.title ?? 'Actualité'}</span>
+          <span aria-hidden="true">·</span>
+          <time datetime={post.publishedAt} class="font-mono text-xs">{formatDate(post.publishedAt)}</time>
+          <span aria-hidden="true">·</span>
+          <span class="font-mono text-xs">{post.readingTime} min de lecture</span>
+          {post.author && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>Par {post.author}</span>
+            </>
+          )}
+        </p>
+      </div>
+    </header>
+
+    <div class="container-orli max-w-4xl py-14 sm:py-16 lg:py-20">
+      {
+        cover && (
+          <img
+            src={cover}
+            alt={post.mainImage?.alt ?? ''}
+            width="1200"
+            height="675"
+            class="mb-12 aspect-[16/9] w-full rounded-2xl object-cover"
+          />
+        )
+      }
+
+      <div class="prose-orli mx-auto">
+        <PortableText value={post.body as any} />
+      </div>
+
+      <a href="/blog/" class="group mx-auto mt-14 flex max-w-[68ch] items-center gap-2 text-[15px] font-semibold text-navy">
+        <Icon name="arrow-left" class="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+        <span class="link-draw">Tous les articles</span>
+      </a>
+    </div>
+  </article>
+
+  <CtaBanner />
+</BaseLayout>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-reading-progress]');
+  const article = document.querySelector<HTMLElement>('article');
+  if (bar && article) {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const box = article.getBoundingClientRect();
+      const total = box.height - window.innerHeight;
+      const progress = total > 0 ? Math.min(1, Math.max(0, -box.top / total)) : 1;
+      bar.style.setProperty('--progress', progress.toFixed(4));
+    };
+    window.addEventListener('scroll', () => frame || (frame = requestAnimationFrame(update)), { passive: true });
+    update();
+  }
+</script>
+
+<style>
+  .reading-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    height: 3px;
+    background: var(--color-gold);
+    transform-origin: left center;
+    transform: scaleX(var(--progress, 0));
+  }
+</style>

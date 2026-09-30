@@ -1,0 +1,5 @@
+# Fichiers d'Astro au nom haché (CSS, JS, polices) : leur contenu ne change
+# jamais sans que leur nom change, on peut donc les garder en cache un an.
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>

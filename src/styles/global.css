@@ -1,0 +1,474 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens ORLI — Tailwind v4 (@theme génère les utilitaires :
+   bg-navy, text-gold, font-sans, ease-out-expo, …)
+--------------------------------------------------------------------------- */
+@theme {
+  --color-navy: #0a192f;
+  --color-navy-800: #112240;
+  --color-navy-700: #1b3157;
+  --color-gold: #eab308;
+  --color-gold-600: #ca9a04;
+  /* Or assombri : seul ton doré lisible en petit texte sur fond clair (4,9:1). */
+  --color-gold-700: #a16207;
+  --color-gray-light: #f3f4f6;
+  --color-danger: #b42318;
+
+  /* Variables posées par <Font /> (astro.config.mjs → experimental.fonts). */
+  --font-sans: var(--font-schibsted);
+  --font-mono: var(--font-fragment);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --animate-stamp: stamp 520ms var(--ease-out-expo) both;
+  --animate-spin-slow: spin 0.9s linear infinite;
+
+  @keyframes stamp {
+    0% {
+      opacity: 0;
+      transform: scale(1.9) rotate(-18deg);
+      filter: blur(6px);
+    }
+    60% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(-8deg);
+      filter: blur(0);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+    caret-color: var(--color-navy);
+    accent-color: var(--color-gold);
+    scrollbar-color: var(--color-navy-700) var(--color-gray-light);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-navy antialiased;
+    font-feature-settings: 'kern', 'liga';
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-navy);
+  }
+
+  /* Anneau de focus contrasté sur chaque surface : navy sur clair, or sur navy.
+     La variable s'hérite : la surface la plus proche décide. */
+  :root,
+  .bg-white,
+  .bg-gray-light,
+  .bg-gold {
+    --focus: var(--color-navy);
+  }
+
+  .bg-navy,
+  .bg-navy-800 {
+    --focus: var(--color-gold);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Transitions entre pages (navigateurs compatibles, sans JavaScript) :
+   l'en-tête reste en place, le contenu glisse légèrement.
+--------------------------------------------------------------------------- */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-out 160ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: vt-in 360ms var(--ease-out-expo) both;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Composants
+--------------------------------------------------------------------------- */
+@layer components {
+  /* Conteneur unique : 16px de gouttière sur mobile, centré au-delà. */
+  .container-orli {
+    @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Sur-titre de section, tel que sur la maquette du client (« NOS PÔLES »).
+     Or foncé sur fond clair (contraste AA), or vif sur navy. */
+  .eyebrow {
+    @apply font-mono text-[12px] leading-none font-medium tracking-[0.2em] text-gold-700 uppercase;
+  }
+
+  .bg-navy .eyebrow {
+    @apply text-gold;
+  }
+
+  /* Boutons ------------------------------------------------------------ */
+  .btn {
+    @apply relative inline-flex min-h-12 items-center justify-center gap-2.5 rounded-lg px-5 text-[15px] font-semibold whitespace-nowrap select-none;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 120ms var(--ease-out-expo);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active {
+    transform: translateY(1px) scale(0.985);
+  }
+
+  .btn [data-icon='arrow'] {
+    transition: transform 260ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) {
+    .btn:hover [data-icon='arrow'] {
+      transform: translateX(3px);
+    }
+  }
+
+  .btn-gold {
+    @apply bg-gold text-navy;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.35) inset,
+      0 8px 18px -10px rgb(3 10 22 / 0.55);
+  }
+
+  .btn-gold:hover {
+    @apply bg-[#f2c229];
+  }
+
+  .btn-navy {
+    @apply bg-navy text-white;
+    box-shadow: 0 10px 24px -14px rgb(10 25 47 / 0.8);
+  }
+
+  .btn-navy:hover {
+    @apply bg-navy-700;
+  }
+
+  /* Contour clair, pour les fonds navy. */
+  .btn-line-light {
+    @apply border border-white/25 text-white;
+  }
+
+  .btn-line-light:hover {
+    @apply border-white/60 bg-white/5;
+  }
+
+  /* Contour sombre, pour les fonds clairs. */
+  .btn-line {
+    @apply border border-navy/20 text-navy;
+  }
+
+  .btn-line:hover {
+    @apply border-navy/60 bg-navy/[0.03];
+  }
+
+  /* Lien texte : un trait de la couleur du texte se dessine de gauche à droite au survol. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition:
+      background-size 320ms var(--ease-out-expo),
+      color 180ms ease;
+  }
+
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Double trait comptable : la convention qui souligne un total arrêté.
+     Les deux filets se tracent l'un après l'autre quand `.is-drawn` est posé. */
+  .double-rule {
+    position: relative;
+    display: inline-block;
+  }
+
+  .double-rule::before,
+  .double-rule::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.02em;
+    height: max(2px, 0.055em);
+    background: currentColor;
+    color: var(--color-gold);
+    transform-origin: left center;
+    transition: transform 700ms var(--ease-out-expo);
+  }
+
+  .double-rule::before {
+    bottom: -0.06em;
+  }
+
+  .double-rule::after {
+    bottom: -0.2em;
+    transition-delay: 140ms;
+  }
+
+  .js .double-rule:not(.is-drawn)::before,
+  .js .double-rule:not(.is-drawn)::after {
+    transform: scaleX(0);
+  }
+
+  /* Champs de formulaire ------------------------------------------------ */
+  .field-label {
+    @apply mb-1.5 flex items-baseline justify-between gap-3 text-[13px] font-medium text-navy/80;
+  }
+
+  /* Bordure navy 50 % : 3,4:1 sur blanc, le minimum WCAG pour le contour d'un champ. */
+  .field-input {
+    @apply block min-h-12 w-full rounded-lg border border-navy/50 bg-white px-3.5 text-[15px] text-navy placeholder:text-navy/60;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .field-input:hover {
+    @apply border-navy/75;
+  }
+
+  .field-input:focus {
+    @apply border-navy outline-none;
+    box-shadow: 0 0 0 3px rgb(10 25 47 / 0.12);
+  }
+
+  /* L'erreur n'apparaît qu'après une première interaction (voir forms.ts). */
+  .field-input[aria-invalid='true'] {
+    @apply border-danger;
+    box-shadow: 0 0 0 4px rgb(180 35 24 / 0.1);
+  }
+
+  textarea.field-input {
+    @apply min-h-32 py-3 leading-relaxed;
+    resize: vertical;
+  }
+
+  select.field-input {
+    @apply appearance-none pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a192f' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.85rem center;
+    background-repeat: no-repeat;
+    background-size: 1.1rem;
+  }
+
+  select.field-input:has(option[value='']:checked) {
+    @apply text-navy/60;
+  }
+
+  .field-error {
+    @apply mt-1.5 text-[13px] font-medium text-danger;
+  }
+
+  /* Texte long (pages légales, articles) ------------------------------ */
+  .prose-orli {
+    @apply max-w-[68ch] text-[16.5px] leading-[1.75] text-navy/80;
+  }
+
+  .prose-orli > * + * {
+    margin-top: 1.1em;
+  }
+
+  .prose-orli h2 {
+    @apply mt-14 scroll-mt-28 text-2xl font-bold tracking-[-0.02em] text-navy;
+  }
+
+  .prose-orli h3 {
+    @apply mt-9 text-lg font-bold tracking-[-0.01em] text-navy;
+  }
+
+  .prose-orli h2 + *,
+  .prose-orli h3 + * {
+    margin-top: 0.6em;
+  }
+
+  .prose-orli a {
+    @apply font-medium text-navy underline decoration-navy/35 decoration-2 underline-offset-4 transition-colors hover:decoration-navy;
+  }
+
+  .prose-orli ul {
+    @apply space-y-2 pl-5;
+    list-style: none;
+  }
+
+  .prose-orli ul > li {
+    position: relative;
+  }
+
+  .prose-orli ul > li::before {
+    content: '';
+    position: absolute;
+    left: -1.1rem;
+    top: 0.72em;
+    width: 0.4rem;
+    height: 2px;
+    background: rgb(10 25 47 / 0.35);
+  }
+
+  .prose-orli strong {
+    @apply font-semibold text-navy;
+  }
+
+  .prose-orli blockquote {
+    @apply border-l border-navy/30 pl-5 text-lg leading-relaxed text-navy;
+  }
+
+  /* Donnée à compléter par le cabinet (mentions légales) : visible, jamais inventée. */
+  .todo {
+    @apply rounded border border-dashed border-navy/40 bg-gray-light px-1.5 py-px text-[0.9em] font-medium text-navy;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilitaires maison
+--------------------------------------------------------------------------- */
+@utility tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@utility text-display {
+  font-size: clamp(2.3rem, 1.35rem + 3.3vw, 4.05rem);
+  line-height: 1.04;
+  letter-spacing: -0.032em;
+}
+
+@utility text-title {
+  font-size: clamp(1.95rem, 1.35rem + 2.2vw, 3.1rem);
+  line-height: 1.06;
+  letter-spacing: -0.028em;
+}
+
+/* ---------------------------------------------------------------------------
+   Entrées de page (en-têtes) : purement CSS, jouées une fois au chargement,
+   le contenu finit toujours visible, même sans JavaScript.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .enter-title {
+    animation: enter-title 1000ms var(--ease-out-expo) both;
+  }
+
+  .enter-fade {
+    animation: enter-fade 800ms var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .enter-rise {
+    animation: enter-rise 900ms var(--ease-out-expo) both;
+    animation-delay: var(--d, 140ms);
+  }
+}
+
+@keyframes enter-title {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(-0.2em -0.2em -0.45em -0.2em);
+    transform: none;
+  }
+}
+
+@keyframes enter-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mouvement réduit : les traits se posent sans se tracer.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .double-rule::before,
+  .double-rule::after {
+    transition-duration: 0ms;
+  }
+}

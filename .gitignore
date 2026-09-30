@@ -1,0 +1,11 @@
+dist/
+node_modules/
+.astro/
+.env
+.DS_Store
+npm-debug.log*
+
+# Artefacts locaux d'impeccable (captures de revue, pages de décision)
+.impeccable/review/
+.impeccable/decision/
+.impeccable/config.local.json

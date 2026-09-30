@@ -1,0 +1,49 @@
+---
+import type { Offer } from '@/lib/content';
+import { offerAnchor } from '@/lib/anchors';
+
+interface Props {
+  offers: readonly Offer[];
+  /** Préfixe des ancres (#offre-…) ciblées par les « situations ». */
+  anchorPrefix?: string;
+  tone?: 'light' | 'dark';
+  headingLevel?: 'h3' | 'h4';
+}
+
+const { offers, anchorPrefix, tone = 'light', headingLevel: Heading = 'h4' } = Astro.props;
+const dark = tone === 'dark';
+
+---
+
+<ol class:list={['divide-y border-y', dark ? 'divide-white/12 border-white/12' : 'divide-navy/12 border-navy/12']}>
+  {
+    offers.map((offer) => (
+      <li
+        id={anchorPrefix ? offerAnchor(anchorPrefix, offer.title) : undefined}
+        class="offer scroll-mt-32 py-5"
+      >
+        <div>
+          <Heading class:list={['text-[17px] leading-snug font-semibold sm:text-lg', dark ? 'text-white' : 'text-navy']}>
+            {offer.title}
+          </Heading>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .offer:target {
+    animation: offer-flash 1600ms var(--ease-out-expo);
+  }
+
+  @keyframes offer-flash {
+    0%,
+    30% {
+      background: rgb(10 25 47 / 0.06);
+    }
+    100% {
+      background: transparent;
+    }
+  }
+</style>

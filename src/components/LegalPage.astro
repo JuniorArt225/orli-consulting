@@ -1,0 +1,125 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Date ISO de dernière mise à jour. */
+  updated: string;
+  /** Sommaire : identifiants et titres des sections (h2) du contenu. */
+  sections: readonly { id: string; title: string }[];
+}
+
+const { title, description, updated, sections } = Astro.props;
+const updatedLabel = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(
+  new Date(updated),
+);
+---
+
+<BaseLayout title={`${title} — ORLI Consulting`} description={description}>
+  <PageHero crumbs={[{ label: title }]} title={title} tone="light">
+    <p class="mt-5 text-[15px] text-navy/70">
+      Dernière mise à jour&nbsp;: <time datetime={updated}>{updatedLabel}</time>
+    </p>
+  </PageHero>
+
+  <div class="container-orli grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:py-24">
+    <aside class="lg:col-span-3">
+      <nav aria-label="Sommaire" class="toc lg:sticky lg:top-28">
+        <p class="text-sm font-semibold text-navy">Sommaire</p>
+        <ol class="mt-4 space-y-1 border-l border-navy/12 text-[14px]">
+          {
+            sections.map((section) => (
+              <li>
+                <a href={`#${section.id}`} data-toc-link class="toc-link">
+                  {section.title}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+    </aside>
+
+    <article class="prose-orli lg:col-span-8 lg:col-start-5" data-toc-content>
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<script>
+  // Sommaire : met en avant la section en cours de lecture.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  const headings = links
+    .map((link) => document.getElementById(link.hash.slice(1)))
+    .filter((heading): heading is HTMLElement => Boolean(heading));
+
+  const activate = (id: string) =>
+    links.forEach((link) => {
+      const active = link.hash === `#${id}`;
+      link.toggleAttribute('data-active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+
+  if (headings.length) activate(headings[0].id);
+
+  if (headings.length && 'IntersectionObserver' in window) {
+    const visible = new Map<Element, boolean>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => visible.set(entry.target, entry.isIntersecting));
+        const current = headings.find((heading) => visible.get(heading));
+        if (current) activate(current.id);
+      },
+      { rootMargin: '-15% 0px -70% 0px' },
+    );
+    headings.forEach((heading) => observer.observe(heading));
+  }
+</script>
+
+<style>
+  .toc-link {
+    position: relative;
+    display: block;
+    padding: 0.4rem 0 0.4rem 1rem;
+    color: rgb(10 25 47 / 0.68);
+    transition: color 160ms ease;
+  }
+
+  /* Même grammaire que le rail du parcours : un segment or sur le filet. */
+  .toc-link::before {
+    content: '';
+    position: absolute;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    left: -1.5px;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--color-gold);
+    transform: scaleY(0);
+    transition: transform 280ms var(--ease-out-expo);
+  }
+
+  .toc-link:hover {
+    color: var(--color-navy);
+  }
+
+  .toc-link[data-active] {
+    color: var(--color-navy);
+    font-weight: 600;
+  }
+
+  .toc-link[data-active]::before {
+    transform: none;
+  }
+
+  @media (max-width: 1023.98px) {
+    .toc {
+      padding: 1.25rem;
+      border-radius: 14px;
+      background: var(--color-gray-light);
+    }
+  }
+</style>

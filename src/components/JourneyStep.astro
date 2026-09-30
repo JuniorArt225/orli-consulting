@@ -1,0 +1,83 @@
+---
+/** Un chapitre du parcours (à placer dans <Journey />). */
+interface Props {
+  number: number;
+  title: string;
+  lead?: string;
+  prefix?: string;
+  /** Niveau du titre, selon la page (h2 si le parcours est la section principale). */
+  as?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { number, title, lead, prefix = 'etape', as: Heading = 'h3', class: className = '' } = Astro.props;
+const num = String(number).padStart(2, '0');
+---
+
+<article id={`${prefix}-${number}`} data-chapter data-state="todo" class={`chapter relative pb-20 pl-12 last:pb-6 lg:pb-32 lg:pl-0 ${className}`}>
+  <span class="chapter-marker font-mono lg:hidden" aria-hidden="true">{num}</span>
+
+  <Heading class="text-title font-extrabold text-navy">
+    <span class="chapter-num font-mono" aria-hidden="true">{num}</span>
+    <span class="sr-only">Étape {number}&nbsp;: </span>{title}
+  </Heading>
+
+  {lead && <p class="mt-4 max-w-2xl text-[17px] leading-relaxed text-navy/75 sm:text-lg">{lead}</p>}
+
+  <div class="mt-10">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .chapter {
+    scroll-margin-top: 6.5rem;
+  }
+
+  .chapter-num {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .chapter-num {
+      display: inline-block;
+      margin-right: 0.9rem;
+      font-size: 17px;
+      letter-spacing: 0.02em;
+      vertical-align: 0.95em;
+      color: var(--color-gold-700);
+    }
+  }
+
+  /* Repère sur la ligne de temps mobile : s'allume quand le chapitre est atteint. */
+  .chapter-marker {
+    position: absolute;
+    top: 0.3rem;
+    left: 0;
+    display: none;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: inset 0 0 0 2px rgb(10 25 47 / 0.15);
+    font-size: 11.5px;
+    color: rgb(10 25 47 / 0.7);
+    transition:
+      background-color 260ms ease,
+      box-shadow 260ms ease,
+      color 260ms ease;
+  }
+
+  @media (max-width: 1023.98px) {
+    .chapter-marker {
+      display: grid;
+    }
+  }
+
+  .chapter:is([data-state='active'], [data-state='done']) .chapter-marker {
+    background: var(--color-gold);
+    box-shadow: inset 0 0 0 2px var(--color-gold);
+    color: var(--color-navy);
+  }
+</style>
