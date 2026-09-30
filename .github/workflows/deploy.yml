@@ -2,7 +2,7 @@ name: Build & Deploy to LWS
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   # Déclenché par le webhook Sanity : une publication d'article relance le build.
   repository_dispatch:
     types: [sanity-publish]
