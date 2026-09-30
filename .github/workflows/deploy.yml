@@ -51,7 +51,7 @@ jobs:
           port: 21
           local-dir: ./dist/
           # Racine web LWS — adapter si le site vit dans un sous-dossier.
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          server-dir: /htdocs/
           # L'action ne réenvoie que les fichiers modifiés (state file sur le serveur).
           state-name: .ftp-deploy-sync-state.json
           dangerous-clean-slate: false
